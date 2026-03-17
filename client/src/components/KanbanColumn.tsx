@@ -9,6 +9,7 @@ interface KanbanColumnProps {
   onDrop: (todoId: string, newStatus: TodoStatus) => void;
   draggedTodoId: string | null;
   onDragStart: (todoId: string) => void;
+  onDragEnd?: () => void;
 }
 
 export function KanbanColumn({
@@ -17,6 +18,7 @@ export function KanbanColumn({
   onDrop,
   draggedTodoId,
   onDragStart,
+  onDragEnd,
 }: KanbanColumnProps) {
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -60,6 +62,7 @@ export function KanbanColumn({
               key={todo.id}
               todo={todo}
               onDragStart={onDragStart}
+              onDragEnd={onDragEnd}
             />
           ))
         )}

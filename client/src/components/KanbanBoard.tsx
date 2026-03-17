@@ -27,6 +27,10 @@ export function KanbanBoard({
     setDraggedTodoId(null);
   };
 
+  const handleDragEnd = () => {
+    setDraggedTodoId(null);
+  };
+
   if (isLoading) {
     return (
       <div className="kanban-board">
@@ -57,6 +61,7 @@ export function KanbanBoard({
             onDrop={handleDrop}
             draggedTodoId={draggedTodoId}
             onDragStart={setDraggedTodoId}
+            onDragEnd={handleDragEnd}
           />
         ))}
       </div>
