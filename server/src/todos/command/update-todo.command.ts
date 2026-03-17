@@ -15,7 +15,7 @@ export class UpdateTodoCommand {
     status?: TodoStatus,
   ): Todo | null {
     const todoId = TodoId.of(id);
-    let todo = this.repository.findById(todoId);
+    let todo = this.repository.getById(todoId);
 
     if (!todo) {
       return null;

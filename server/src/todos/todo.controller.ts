@@ -91,6 +91,7 @@ export class TodoController {
       }
       return this.mapTodoToResponseDto(todo);
     } catch (error) {
+      if (error instanceof NotFoundException) throw error;
       throw new BadRequestException(
         error instanceof Error ? error.message : 'Failed to update todo',
       );
