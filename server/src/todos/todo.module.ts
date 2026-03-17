@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TodoController } from '@/todos/todo.controller';
-import { TodoCoordinator } from '@/todos/coordinator/todo.coordinator';
 import { GetTodosQuery } from '@/todos/query/get-todos.query';
 import { GetTodoByIdQuery } from '@/todos/query/get-todo-by-id.query';
 import { CreateTodoCommand } from '@/todos/command/create-todo.command';
@@ -17,7 +16,6 @@ import { TodoDataSource } from '@/todos/datasource/todo.datasource';
     GetTodoByIdQuery,
     CreateTodoCommand,
     UpdateTodoCommand,
-    TodoCoordinator,
   ],
 })
 export class TodoModule {}

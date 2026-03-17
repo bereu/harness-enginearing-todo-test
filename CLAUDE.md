@@ -12,8 +12,7 @@ All architectural decisions are documented as ADRs (Architecture Decision Record
 
 ## plan 
 * we have information `docs/task` 
-1. plan your task with example.md and add to `docs/task/plan` 
-2. if you start implementation, move `docs/task/active`
+
 
 ## flow
 1. plan your task (plan-spec skill)

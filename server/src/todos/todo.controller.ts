@@ -12,17 +12,32 @@ import {
 import { CreateTodoDto } from '@/todos/dto/create-todo.dto';
 import { UpdateTodoDto } from '@/todos/dto/update-todo.dto';
 import { TodoResponseDto } from '@/todos/dto/todo.response.dto';
-import { TodoCoordinator } from '@/todos/coordinator/todo.coordinator';
-import { Todo } from '@/todos/domain/todo';
+import { GetTodosQuery } from '@/todos/query/get-todos.query';
+import { GetTodoByIdQuery } from '@/todos/query/get-todo-by-id.query';
+import { CreateTodoCommand } from '@/todos/command/create-todo.command';
+import { UpdateTodoCommand } from '@/todos/command/update-todo.command';
+import { TodoRepository } from '@/todos/repository/todo.repository';
+import { Todo, TodoStatus } from '@/todos/domain/todo';
+import { TodoId } from '@/todos/domain/todo-id';
 
 @Controller('todos')
 export class TodoController {
-  constructor(private readonly coordinator: TodoCoordinator) {}
+  constructor(
+    private readonly getTodosQuery: GetTodosQuery,
+    private readonly getTodoByIdQuery: GetTodoByIdQuery,
+    private readonly createTodoCommand: CreateTodoCommand,
+    private readonly updateTodoCommand: UpdateTodoCommand,
+    private readonly todoRepository: TodoRepository,
+  ) {}
 
   @Post()
   createTodo(@Body() createTodoDto: CreateTodoDto): TodoResponseDto {
     try {
-      const todo = this.coordinator.createTodo(createTodoDto);
+      const todo = this.createTodoCommand.execute(
+        createTodoDto.title,
+        createTodoDto.description,
+        createTodoDto.status as TodoStatus | undefined,
+      );
       return this.mapTodoToResponseDto(todo);
     } catch (error) {
       throw new BadRequestException(
@@ -34,20 +49,28 @@ export class TodoController {
   @Get()
   getTodos(@Query('status') status?: string): TodoResponseDto[] {
     if (status) {
-      const todos = this.coordinator.getTodosByStatus(status);
+      const todos = this.todoRepository.findByStatus(status);
       return todos.map((todo) => this.mapTodoToResponseDto(todo));
     }
-    const todosList = this.coordinator.getTodos();
+    const todosList = this.getTodosQuery.execute();
     return todosList.getAll().map((todo) => this.mapTodoToResponseDto(todo));
   }
 
   @Get(':id')
   getTodoById(@Param('id') id: string): TodoResponseDto {
-    const todo = this.coordinator.getTodoById(id);
-    if (!todo) {
-      throw new NotFoundException(`Todo with id ${id} not found`);
+    try {
+      const todoId = TodoId.of(id);
+      const todo = this.getTodoByIdQuery.execute(todoId);
+      if (!todo) {
+        throw new NotFoundException(`Todo with id ${id} not found`);
+      }
+      return this.mapTodoToResponseDto(todo);
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Invalid todo ID',
+      );
     }
-    return this.mapTodoToResponseDto(todo);
   }
 
   @Patch(':id')
@@ -56,7 +79,13 @@ export class TodoController {
     @Body() updateTodoDto: UpdateTodoDto,
   ): TodoResponseDto {
     try {
-      const todo = this.coordinator.updateTodo(id, updateTodoDto);
+      const todo = this.updateTodoCommand.execute(
+        id,
+        updateTodoDto.title,
+        updateTodoDto.description,
+        updateTodoDto.completed,
+        updateTodoDto.status as TodoStatus | undefined,
+      );
       if (!todo) {
         throw new NotFoundException(`Todo with id ${id} not found`);
       }
