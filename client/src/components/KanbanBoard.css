@@ -1,0 +1,45 @@
+.kanban-board {
+  width: 100%;
+  padding: 20px;
+  background: #fff;
+}
+
+.kanban-board h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.kanban-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+}
+
+.loading-message,
+.error-message {
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.error-message {
+  color: #d32f2f;
+  background: #ffebee;
+  border-radius: 4px;
+}
+
+.loading-message {
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .kanban-board {
+    padding: 12px;
+  }
+
+  .kanban-container {
+    gap: 12px;
+  }
+}

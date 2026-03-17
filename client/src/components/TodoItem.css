@@ -1,0 +1,64 @@
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 16px;
+  transition: all 0.2s;
+}
+
+.todo-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.todo-content {
+  flex: 1;
+}
+
+.todo-title {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.todo-description {
+  margin: 0 0 8px 0;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.todo-date {
+  display: block;
+  color: #999;
+  font-size: 12px;
+}
+
+.todo-status {
+  margin-left: 16px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status-badge.pending {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffc107;
+}
+
+.status-badge.completed {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #28a745;
+}
