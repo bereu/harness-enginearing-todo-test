@@ -16,12 +16,14 @@ This plan addresses violations of established Architecture Decision Records (ADR
 ### Frontend Violations
 
 #### 1. **FE-002: Form Validation with Zod** ❌
+
 - **Violation**: `TodoForm.tsx` uses manual validation instead of Zod schemas
 - **Current State**: Lines 20-23 manually validate title with string checking
 - **Required**: Define Zod schema for form validation
 - **Impact**: Inconsistent validation patterns, poor UX with default HTML messages
 
 #### 2. **FE-003: HTTP Client with Axios** ❌
+
 - **Violation**: `todoService.ts` uses native `fetch` instead of Axios
 - **Missing**:
   - Axios instance with global configuration
@@ -31,6 +33,7 @@ This plan addresses violations of established Architecture Decision Records (ADR
 - **Impact**: No unified error handling, duplicated headers, manual error transformation
 
 #### 3. **FE-001: Error Handling with Rollbar** ❌
+
 - **Violation**: No Rollbar integration in frontend
 - **Missing**:
   - Rollbar client initialization
@@ -42,6 +45,7 @@ This plan addresses violations of established Architecture Decision Records (ADR
 ### Backend Violations
 
 #### 4. **BE-004: Tests for Business Logic** ⚠️
+
 - **Violation**: Missing unit tests for Query/Command layers
 - **Current State**: Only `app.controller.spec.ts` exists
 - **Required**: Unit tests for:
@@ -50,6 +54,7 @@ This plan addresses violations of established Architecture Decision Records (ADR
 - **Impact**: No verification of business logic correctness
 
 #### 5. **BE-003: Error Handling with Rollbar** ⚠️
+
 - **Violation**: No Rollbar integration in backend
 - **Missing**:
   - Custom error classes (BusinessLogicError, SystemError)
@@ -59,6 +64,7 @@ This plan addresses violations of established Architecture Decision Records (ADR
 - **Impact**: No centralized error monitoring
 
 ### Backend Compliance ✅
+
 - **BE-001**: Layer architecture correctly followed (TodoCoordinator removed per commit 22d45a8)
 - **BE-002**: Domain class immutability and self-validation correctly implemented
 
@@ -67,9 +73,11 @@ This plan addresses violations of established Architecture Decision Records (ADR
 ## Refactor Tasks
 
 ### Phase 1: Frontend Form Validation (FE-002)
+
 **User Story**: User can see validated form errors using Zod
 
 **Tasks**:
+
 1. Create Zod schema file: `client/src/schemas/todo.schema.ts`
    - Define `CreateTodoSchema` with title validation (required, max 255 chars)
    - Define `UpdateTodoSchema` with optional fields
@@ -86,10 +94,13 @@ This plan addresses violations of established Architecture Decision Records (ADR
 ---
 
 ### Phase 2: Frontend HTTP Client with Axios (FE-003)
+
 **User Story**: Frontend uses Axios with centralized configuration and interceptors
 
 **Tasks**:
+
 1. Install Axios dependency (if not present)
+
    ```bash
    npm install axios
    ```
@@ -114,9 +125,11 @@ This plan addresses violations of established Architecture Decision Records (ADR
 ---
 
 ### Phase 3: Frontend Error Handling & Monitoring (FE-001)
+
 **User Story**: Frontend errors are captured and reported to Rollbar
 
 **Tasks**:
+
 1. Install Rollbar: `npm install rollbar`
 
 2. Initialize Rollbar: `client/src/services/rollbar.ts`
@@ -141,9 +154,11 @@ This plan addresses violations of established Architecture Decision Records (ADR
 ---
 
 ### Phase 4: Backend Error Handling & Monitoring (BE-003)
+
 **User Story**: Backend errors are categorized and reported to Rollbar
 
 **Tasks**:
+
 1. Install Rollbar: `npm install rollbar`
 
 2. Create error classes: `server/src/shared/domain/errors/`
@@ -170,9 +185,11 @@ This plan addresses violations of established Architecture Decision Records (ADR
 ---
 
 ### Phase 5: Backend Unit Tests (BE-004)
+
 **User Story**: Business logic in Query and Command layers is tested
 
 **Tasks**:
+
 1. Create test file: `server/src/todos/query/get-todos.query.spec.ts`
    - Test successful retrieval
    - Test with empty repository
@@ -202,14 +219,17 @@ This plan addresses violations of established Architecture Decision Records (ADR
 ## Implementation Order
 
 **Wave 1 (Frontend Form & HTTP)**:
+
 - Phase 1: Form Validation with Zod
 - Phase 2: Axios HTTP Client
 
 **Wave 2 (Error Handling)**:
+
 - Phase 3: Frontend Rollbar
 - Phase 4: Backend Rollbar
 
 **Wave 3 (Testing)**:
+
 - Phase 5: Backend Unit Tests
 
 ---

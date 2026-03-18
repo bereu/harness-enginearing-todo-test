@@ -10,10 +10,9 @@ This skill ensures that the codebase adheres to the rules defined in the Archite
 
 ## Steps
 
-1. **Read all ADRs**: 
+1. **Read all ADRs**:
    - Scan and read all the markdown files within `.archgate/adrs/` (or `docs/adr/`).
    - Note the core "Decision" and "Do's and Don'ts" rules for each ADR.
-   
 2. **Check for Violations**:
    - Inspect the codebase (both frontend `client/` and backend `server/` depending on the ADR's target domain) to identify where these rules are being violated.
    - For frontend, check for improper form validations, `fetch` calls, or improper error handling.

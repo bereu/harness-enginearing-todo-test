@@ -13,6 +13,7 @@
     "axios": "^1.7.7",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "rollbar": "^2.26.3",
     "zod": "^3.24.1"
   },
   "devDependencies": {

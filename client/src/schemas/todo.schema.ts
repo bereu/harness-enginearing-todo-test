@@ -15,10 +15,7 @@ export const CreateTodoSchema = z.object({
     .max(2000, "Description must be no longer than 2000 characters")
     .optional()
     .nullable(),
-  status: z
-    .enum(TODO_STATUSES)
-    .optional()
-    .default("todo"),
+  status: z.enum(TODO_STATUSES).optional().default("todo"),
 });
 
 export const UpdateTodoSchema = z.object({

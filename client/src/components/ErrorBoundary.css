@@ -1,0 +1,40 @@
+.error-boundary-fallback {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  padding: 32px;
+  text-align: center;
+  margin: 32px;
+}
+
+.error-boundary-fallback h1 {
+  color: #c33;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.error-boundary-fallback p {
+  color: #666;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.error-boundary-retry {
+  background-color: #646cff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.error-boundary-retry:hover {
+  background-color: #535bf2;
+}
+
+.error-boundary-retry:active {
+  background-color: #4346d6;
+}

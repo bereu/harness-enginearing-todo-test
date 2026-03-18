@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from "axios";
+import { logApiError } from "@/services/rollbar";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
@@ -31,7 +32,7 @@ class HttpClient {
       },
       (error) => {
         return Promise.reject(error);
-      }
+      },
     );
 
     this.instance.interceptors.response.use(
@@ -56,8 +57,16 @@ class HttpClient {
           apiError.message = "Network error - please check your connection";
         }
 
+        // Log to Rollbar
+        logApiError(apiError, {
+          method: error.config?.method?.toUpperCase(),
+          url: error.config?.url,
+          status: apiError.status,
+          action: "api_request",
+        });
+
         return Promise.reject(apiError);
-      }
+      },
     );
   }
 

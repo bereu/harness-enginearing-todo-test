@@ -54,9 +54,7 @@ export function TodoForm({ onSubmit, isLoading = false, error }: TodoFormProps) 
     <form onSubmit={handleSubmit} className="todo-form" noValidate>
       <h2>Add a New Todo</h2>
 
-      {error && (
-        <div className="error-message">{error}</div>
-      )}
+      {error && <div className="error-message">{error}</div>}
 
       <div className="form-group">
         <label htmlFor="title">Title *</label>
@@ -74,7 +72,9 @@ export function TodoForm({ onSubmit, isLoading = false, error }: TodoFormProps) 
         />
         <small className="char-count">{title.length}/255</small>
         {validationErrors.title && (
-          <div id="title-error" className="field-error">{validationErrors.title}</div>
+          <div id="title-error" className="field-error">
+            {validationErrors.title}
+          </div>
         )}
       </div>
 
@@ -92,7 +92,9 @@ export function TodoForm({ onSubmit, isLoading = false, error }: TodoFormProps) 
           aria-describedby={validationErrors.description ? "description-error" : undefined}
         />
         {validationErrors.description && (
-          <div id="description-error" className="field-error">{validationErrors.description}</div>
+          <div id="description-error" className="field-error">
+            {validationErrors.description}
+          </div>
         )}
       </div>
 
