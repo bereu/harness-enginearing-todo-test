@@ -4,20 +4,20 @@
  */
 export default {
   meta: {
-    name: 'custom-rules',
+    name: "custom-rules",
   },
   rules: {
-    'no-todo-identifier': {
+    "no-todo-identifier": {
       meta: {
-        type: 'suggestion',
+        type: "suggestion",
         docs: {
-          description: 'disallow TODO as an identifier',
+          description: "disallow TODO as an identifier",
         },
       },
       create(context) {
         return {
           Identifier(node) {
-            if (node.name === 'TODO') {
+            if (node.name === "TODO") {
               context.report({
                 node,
                 message: 'Do not use "TODO" as a variable or function name.',
@@ -27,19 +27,22 @@ export default {
         };
       },
     },
-    'no-relative-imports': {
+    "no-relative-imports": {
       meta: {
-        type: 'problem',
+        type: "problem",
         docs: {
-          description: 'disallow relative imports (starting with ./ or ../)',
+          description: "disallow relative imports (starting with ./ or ../)",
         },
       },
       create(context) {
         const checkImport = (node) => {
-          if (node.source && (node.source.value.startsWith('./') || node.source.value.startsWith('../'))) {
+          if (
+            node.source &&
+            (node.source.value.startsWith("./") || node.source.value.startsWith("../"))
+          ) {
             context.report({
               node: node.source,
-              message: 'Relative imports are not allowed. Please use absolute paths or aliases.',
+              message: "Relative imports are not allowed. Please use absolute paths or aliases.",
             });
           }
         };

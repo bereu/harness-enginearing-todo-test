@@ -10,6 +10,7 @@ rules: true
 ## Context
 
 We need to establish a consistent pattern for error handling across the application and define a structured way to report these errors to our monitoring service, Rollbar. We primarily encounter two distinct types of errors:
+
 1. **Business Logic Errors**: These are errors where an action is impossible within the valid business workflow. For example: A non-existent user attempting to create a project or a todo item.
 2. **System Errors**: These are unexpected technical failures, such as 500 Internal Server errors, type errors, database connection failures, etc.
 

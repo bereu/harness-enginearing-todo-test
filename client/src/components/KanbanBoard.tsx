@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import type { Todo, TodoStatus } from '@/types/todo';
-import { TODO_STATUSES } from '@/constants/todo-statuses';
-import { KanbanColumn } from './KanbanColumn';
-import './KanbanBoard.css';
+import { useState } from "react";
+import type { Todo, TodoStatus } from "@/types/todo";
+import { TODO_STATUSES } from "@/constants/todo-statuses";
+import { KanbanColumn } from "./KanbanColumn";
+import "./KanbanBoard.css";
 
 interface KanbanBoardProps {
   todos: Todo[];
@@ -11,12 +11,7 @@ interface KanbanBoardProps {
   onStatusChange: (todoId: string, newStatus: TodoStatus) => void;
 }
 
-export function KanbanBoard({
-  todos,
-  isLoading = false,
-  error,
-  onStatusChange,
-}: KanbanBoardProps) {
+export function KanbanBoard({ todos, isLoading = false, error, onStatusChange }: KanbanBoardProps) {
   const [draggedTodoId, setDraggedTodoId] = useState<string | null>(null);
 
   const handleDrop = (todoId: string, newStatus: TodoStatus) => {
@@ -42,9 +37,7 @@ export function KanbanBoard({
   if (error) {
     return (
       <div className="kanban-board">
-        <div className="error-message">
-          Failed to load todos: {error}
-        </div>
+        <div className="error-message">Failed to load todos: {error}</div>
       </div>
     );
   }

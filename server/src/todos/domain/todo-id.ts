@@ -1,5 +1,5 @@
-import { randomUUID } from 'crypto';
-import { InvalidTodoIdException } from '@/todos/domain/exceptions/todo-domain.exception';
+import { randomUUID } from "crypto";
+import { InvalidTodoIdException } from "@/todos/domain/exceptions/todo-domain.exception";
 
 export class TodoId {
   private constructor(private readonly _value: string) {}
@@ -10,8 +10,8 @@ export class TodoId {
   }
 
   static of(id: string): TodoId {
-    if (!id || typeof id !== 'string') {
-      throw new InvalidTodoIdException('must be a non-empty string');
+    if (!id || typeof id !== "string") {
+      throw new InvalidTodoIdException("must be a non-empty string");
     }
     return new TodoId(id);
   }

@@ -1,7 +1,7 @@
-import type { Todo, TodoStatus } from '@/types/todo';
-import { STATUS_LABELS } from '@/constants/todo-statuses';
-import { KanbanCard } from './KanbanCard';
-import './KanbanColumn.css';
+import type { Todo, TodoStatus } from "@/types/todo";
+import { STATUS_LABELS } from "@/constants/todo-statuses";
+import { KanbanCard } from "./KanbanCard";
+import "./KanbanColumn.css";
 
 interface KanbanColumnProps {
   status: TodoStatus;
@@ -22,16 +22,16 @@ export function KanbanColumn({
 }: KanbanColumnProps) {
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    e.currentTarget.classList.add('drag-over');
+    e.currentTarget.classList.add("drag-over");
   };
 
   const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.currentTarget.classList.remove('drag-over');
+    e.currentTarget.classList.remove("drag-over");
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    e.currentTarget.classList.remove('drag-over');
+    e.currentTarget.classList.remove("drag-over");
     if (draggedTodoId) {
       onDrop(draggedTodoId, status);
     }
@@ -58,12 +58,7 @@ export function KanbanColumn({
           </div>
         ) : (
           columnTodos.map((todo) => (
-            <KanbanCard
-              key={todo.id}
-              todo={todo}
-              onDragStart={onDragStart}
-              onDragEnd={onDragEnd}
-            />
+            <KanbanCard key={todo.id} todo={todo} onDragStart={onDragStart} onDragEnd={onDragEnd} />
           ))
         )}
       </div>

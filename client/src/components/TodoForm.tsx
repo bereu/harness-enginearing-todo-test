@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import type { CreateTodoPayload } from '@/types/todo';
-import './TodoForm.css';
+import { useState } from "react";
+import type { CreateTodoPayload } from "@/types/todo";
+import "./TodoForm.css";
 
 interface TodoFormProps {
   onSubmit: (payload: CreateTodoPayload) => Promise<void>;
@@ -9,16 +9,16 @@ interface TodoFormProps {
 }
 
 export function TodoForm({ onSubmit, isLoading = false, error }: TodoFormProps) {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [validationError, setValidationError] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [validationError, setValidationError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setValidationError('');
+    setValidationError("");
 
     if (!title.trim()) {
-      setValidationError('Title is required');
+      setValidationError("Title is required");
       return;
     }
 
@@ -27,8 +27,8 @@ export function TodoForm({ onSubmit, isLoading = false, error }: TodoFormProps) 
         title: title.trim(),
         description: description.trim() || undefined,
       });
-      setTitle('');
-      setDescription('');
+      setTitle("");
+      setDescription("");
     } catch {
       // Error is handled by parent component
     }
@@ -39,9 +39,7 @@ export function TodoForm({ onSubmit, isLoading = false, error }: TodoFormProps) 
       <h2>Add a New Todo</h2>
 
       {(validationError || error) && (
-        <div className="error-message">
-          {validationError || error}
-        </div>
+        <div className="error-message">{validationError || error}</div>
       )}
 
       <div className="form-group">
@@ -72,12 +70,8 @@ export function TodoForm({ onSubmit, isLoading = false, error }: TodoFormProps) 
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={isLoading}
-        className="submit-button"
-      >
-        {isLoading ? 'Creating...' : 'Add Todo'}
+      <button type="submit" disabled={isLoading} className="submit-button">
+        {isLoading ? "Creating..." : "Add Todo"}
       </button>
     </form>
   );

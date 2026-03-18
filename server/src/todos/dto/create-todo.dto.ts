@@ -1,11 +1,5 @@
-import {
-  IsString,
-  IsNotEmpty,
-  IsOptional,
-  MaxLength,
-  IsIn,
-} from 'class-validator';
-import { VALID_STATUSES } from '@/todos/domain/todo';
+import { IsString, IsNotEmpty, IsOptional, MaxLength, IsIn } from "class-validator";
+import { VALID_STATUSES } from "@/todos/domain/todo";
 
 export class CreateTodoDto {
   @IsString()

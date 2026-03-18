@@ -78,17 +78,21 @@ TodoCoordinator doesn't do this. It just wraps single operations.
 ## Solution: Remove Coordinator
 
 **BE-001 allows Controller to access Query/Command directly** (line 72):
+
 > "Controller: Entry point. Accesses Coordinator, Query, and Command."
 
 ### Files to Delete (1)
+
 - `server/src/todos/coordinator/todo.coordinator.ts`
 - `server/src/todos/coordinator/` (entire directory if only file)
 
 ### Files to Modify (2)
+
 - `server/src/todos/todo.controller.ts` - Inject Query/Command directly
 - `server/src/todos/todo.module.ts` - Remove Coordinator provider
 
 ### Files to Update (1)
+
 - `server/src/todos/todo.controller.spec.ts` - Update mocks/tests
 
 ---
@@ -98,8 +102,9 @@ TodoCoordinator doesn't do this. It just wraps single operations.
 **File**: `server/src/todos/todo.controller.ts`
 
 ### Current (with Coordinator)
+
 ```typescript
-@Controller('todos')
+@Controller("todos")
 export class TodoController {
   constructor(private readonly coordinator: TodoCoordinator) {}
 
@@ -110,13 +115,13 @@ export class TodoController {
       return this.mapTodoToResponseDto(todo);
     } catch (error) {
       throw new BadRequestException(
-        error instanceof Error ? error.message : 'Failed to create todo',
+        error instanceof Error ? error.message : "Failed to create todo",
       );
     }
   }
 
   @Get()
-  getTodos(@Query('status') status?: string): TodoResponseDto[] {
+  getTodos(@Query("status") status?: string): TodoResponseDto[] {
     if (status) {
       const todos = this.coordinator.getTodosByStatus(status);
       return todos.map((todo) => this.mapTodoToResponseDto(todo));
@@ -125,8 +130,8 @@ export class TodoController {
     return todosList.getAll().map((todo) => this.mapTodoToResponseDto(todo));
   }
 
-  @Get(':id')
-  getTodoById(@Param('id') id: string): TodoResponseDto {
+  @Get(":id")
+  getTodoById(@Param("id") id: string): TodoResponseDto {
     const todo = this.coordinator.getTodoById(id);
     if (!todo) {
       throw new NotFoundException(`Todo with id ${id} not found`);
@@ -134,11 +139,8 @@ export class TodoController {
     return this.mapTodoToResponseDto(todo);
   }
 
-  @Patch(':id')
-  updateTodo(
-    @Param('id') id: string,
-    @Body() updateTodoDto: UpdateTodoDto,
-  ): TodoResponseDto {
+  @Patch(":id")
+  updateTodo(@Param("id") id: string, @Body() updateTodoDto: UpdateTodoDto): TodoResponseDto {
     try {
       const todo = this.coordinator.updateTodo(id, updateTodoDto);
       if (!todo) {
@@ -147,7 +149,7 @@ export class TodoController {
       return this.mapTodoToResponseDto(todo);
     } catch (error) {
       throw new BadRequestException(
-        error instanceof Error ? error.message : 'Failed to update todo',
+        error instanceof Error ? error.message : "Failed to update todo",
       );
     }
   }
@@ -155,6 +157,7 @@ export class TodoController {
 ```
 
 ### New (without Coordinator - Direct Query/Command)
+
 ```typescript
 import {
   Controller,
@@ -166,18 +169,18 @@ import {
   Query,
   BadRequestException,
   NotFoundException,
-} from '@nestjs/common';
-import { CreateTodoDto } from '@/todos/dto/create-todo.dto';
-import { UpdateTodoDto } from '@/todos/dto/update-todo.dto';
-import { TodoResponseDto } from '@/todos/dto/todo.response.dto';
-import { GetTodosQuery } from '@/todos/query/get-todos.query';
-import { GetTodoByIdQuery } from '@/todos/query/get-todo-by-id.query';
-import { CreateTodoCommand } from '@/todos/command/create-todo.command';
-import { UpdateTodoCommand } from '@/todos/command/update-todo.command';
-import { Todo } from '@/todos/domain/todo';
-import { TodoRepository } from '@/todos/repository/todo.repository';
+} from "@nestjs/common";
+import { CreateTodoDto } from "@/todos/dto/create-todo.dto";
+import { UpdateTodoDto } from "@/todos/dto/update-todo.dto";
+import { TodoResponseDto } from "@/todos/dto/todo.response.dto";
+import { GetTodosQuery } from "@/todos/query/get-todos.query";
+import { GetTodoByIdQuery } from "@/todos/query/get-todo-by-id.query";
+import { CreateTodoCommand } from "@/todos/command/create-todo.command";
+import { UpdateTodoCommand } from "@/todos/command/update-todo.command";
+import { Todo } from "@/todos/domain/todo";
+import { TodoRepository } from "@/todos/repository/todo.repository";
 
-@Controller('todos')
+@Controller("todos")
 export class TodoController {
   constructor(
     private readonly getTodosQuery: GetTodosQuery,
@@ -198,13 +201,13 @@ export class TodoController {
       return this.mapTodoToResponseDto(todo);
     } catch (error) {
       throw new BadRequestException(
-        error instanceof Error ? error.message : 'Failed to create todo',
+        error instanceof Error ? error.message : "Failed to create todo",
       );
     }
   }
 
   @Get()
-  getTodos(@Query('status') status?: string): TodoResponseDto[] {
+  getTodos(@Query("status") status?: string): TodoResponseDto[] {
     if (status) {
       const todos = this.todoRepository.findByStatus(status);
       return todos.map((todo) => this.mapTodoToResponseDto(todo));
@@ -213,8 +216,8 @@ export class TodoController {
     return todosList.getAll().map((todo) => this.mapTodoToResponseDto(todo));
   }
 
-  @Get(':id')
-  getTodoById(@Param('id') id: string): TodoResponseDto {
+  @Get(":id")
+  getTodoById(@Param("id") id: string): TodoResponseDto {
     try {
       const todo = this.getTodoByIdQuery.execute(TodoId.of(id));
       if (!todo) {
@@ -223,17 +226,12 @@ export class TodoController {
       return this.mapTodoToResponseDto(todo);
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
-      throw new BadRequestException(
-        error instanceof Error ? error.message : 'Invalid todo ID',
-      );
+      throw new BadRequestException(error instanceof Error ? error.message : "Invalid todo ID");
     }
   }
 
-  @Patch(':id')
-  updateTodo(
-    @Param('id') id: string,
-    @Body() updateTodoDto: UpdateTodoDto,
-  ): TodoResponseDto {
+  @Patch(":id")
+  updateTodo(@Param("id") id: string, @Body() updateTodoDto: UpdateTodoDto): TodoResponseDto {
     try {
       const todo = this.updateTodoCommand.execute(
         id,
@@ -248,7 +246,7 @@ export class TodoController {
       return this.mapTodoToResponseDto(todo);
     } catch (error) {
       throw new BadRequestException(
-        error instanceof Error ? error.message : 'Failed to update todo',
+        error instanceof Error ? error.message : "Failed to update todo",
       );
     }
   }
@@ -267,6 +265,7 @@ export class TodoController {
 ```
 
 **Key Changes**:
+
 - ✅ Inject Query/Command directly (not through Coordinator)
 - ✅ Call Query/Command.execute() directly
 - ✅ Keep error handling at Controller boundary
@@ -280,16 +279,17 @@ export class TodoController {
 **File**: `server/src/todos/todo.module.ts`
 
 ### Current (with Coordinator)
+
 ```typescript
-import { Module } from '@nestjs/common';
-import { TodoDataSource } from '@/todos/datasource/todo.datasource';
-import { TodoRepository } from '@/todos/repository/todo.repository';
-import { GetTodosQuery } from '@/todos/query/get-todos.query';
-import { GetTodoByIdQuery } from '@/todos/query/get-todo-by-id.query';
-import { CreateTodoCommand } from '@/todos/command/create-todo.command';
-import { UpdateTodoCommand } from '@/todos/command/update-todo.command';
-import { TodoCoordinator } from '@/todos/coordinator/todo.coordinator';
-import { TodoController } from '@/todos/todo.controller';
+import { Module } from "@nestjs/common";
+import { TodoDataSource } from "@/todos/datasource/todo.datasource";
+import { TodoRepository } from "@/todos/repository/todo.repository";
+import { GetTodosQuery } from "@/todos/query/get-todos.query";
+import { GetTodoByIdQuery } from "@/todos/query/get-todo-by-id.query";
+import { CreateTodoCommand } from "@/todos/command/create-todo.command";
+import { UpdateTodoCommand } from "@/todos/command/update-todo.command";
+import { TodoCoordinator } from "@/todos/coordinator/todo.coordinator";
+import { TodoController } from "@/todos/todo.controller";
 
 @Module({
   controllers: [TodoController],
@@ -307,15 +307,16 @@ export class TodoModule {}
 ```
 
 ### New (without Coordinator)
+
 ```typescript
-import { Module } from '@nestjs/common';
-import { TodoDataSource } from '@/todos/datasource/todo.datasource';
-import { TodoRepository } from '@/todos/repository/todo.repository';
-import { GetTodosQuery } from '@/todos/query/get-todos.query';
-import { GetTodoByIdQuery } from '@/todos/query/get-todo-by-id.query';
-import { CreateTodoCommand } from '@/todos/command/create-todo.command';
-import { UpdateTodoCommand } from '@/todos/command/update-todo.command';
-import { TodoController } from '@/todos/todo.controller';
+import { Module } from "@nestjs/common";
+import { TodoDataSource } from "@/todos/datasource/todo.datasource";
+import { TodoRepository } from "@/todos/repository/todo.repository";
+import { GetTodosQuery } from "@/todos/query/get-todos.query";
+import { GetTodoByIdQuery } from "@/todos/query/get-todo-by-id.query";
+import { CreateTodoCommand } from "@/todos/command/create-todo.command";
+import { UpdateTodoCommand } from "@/todos/command/update-todo.command";
+import { TodoController } from "@/todos/todo.controller";
 
 @Module({
   controllers: [TodoController],
@@ -333,6 +334,7 @@ export class TodoModule {}
 ```
 
 **Changes**:
+
 - ✅ Remove TodoCoordinator import
 - ✅ Remove TodoCoordinator from providers
 - ✅ All Query/Command still provided (Controller needs them)
@@ -342,6 +344,7 @@ export class TodoModule {}
 ## Phase 3: Delete TodoCoordinator
 
 **Files to delete**:
+
 - `server/src/todos/coordinator/todo.coordinator.ts`
 - `server/src/todos/coordinator/` directory (if this is the only file)
 
@@ -352,6 +355,7 @@ export class TodoModule {}
 **File to update**: `server/src/todos/todo.controller.spec.ts`
 
 ### Changes in test setup:
+
 ```typescript
 // BEFORE
 const mockCoordinator = {
@@ -380,16 +384,17 @@ controller = new TodoController(
 ```
 
 ### Update test expectations:
+
 ```typescript
 // BEFORE
-it('should call coordinator.createTodo', () => {
+it("should call coordinator.createTodo", () => {
   mockCoordinator.createTodo.mockReturnValue(mockTodo);
   controller.createTodo(createTodoDto);
   expect(mockCoordinator.createTodo).toHaveBeenCalledWith(createTodoDto);
 });
 
 // AFTER
-it('should call createTodoCommand.execute', () => {
+it("should call createTodoCommand.execute", () => {
   mockCreateTodoCommand.execute.mockReturnValue(mockTodo);
   controller.createTodo(createTodoDto);
   expect(mockCreateTodoCommand.execute).toHaveBeenCalledWith(
@@ -430,6 +435,7 @@ graph TD
 ```
 
 **Key Difference**:
+
 - ❌ BEFORE: Controller → Coordinator → Query/Command
 - ✅ AFTER: Controller → Query/Command directly (when no orchestration needed)
 
@@ -437,15 +443,16 @@ graph TD
 
 ## Files Changed Summary
 
-| File | Action | Reason |
-|------|--------|--------|
-| `todo.controller.ts` | MODIFY | Inject Query/Command directly, remove Coordinator |
-| `todo.module.ts` | MODIFY | Remove Coordinator provider |
-| `coordinator/todo.coordinator.ts` | DELETE | Not needed - no orchestration |
-| `coordinator/` (directory) | DELETE | Only file was coordinator.ts |
-| `todo.controller.spec.ts` | MODIFY | Update mocks to test Query/Command directly |
+| File                              | Action | Reason                                            |
+| --------------------------------- | ------ | ------------------------------------------------- |
+| `todo.controller.ts`              | MODIFY | Inject Query/Command directly, remove Coordinator |
+| `todo.module.ts`                  | MODIFY | Remove Coordinator provider                       |
+| `coordinator/todo.coordinator.ts` | DELETE | Not needed - no orchestration                     |
+| `coordinator/` (directory)        | DELETE | Only file was coordinator.ts                      |
+| `todo.controller.spec.ts`         | MODIFY | Update mocks to test Query/Command directly       |
 
 **Files NOT changed** (already correct):
+
 - All Query classes
 - All Command classes
 - All DTO classes
@@ -492,25 +499,29 @@ graph TD
 ## Acceptance Criteria
 
 ### AC1: BE-001 Compliance
+
 - [ ] Coordinator removed completely
 - [ ] Controller calls Query/Command directly (allowed by BE-001)
 - [ ] No wrapper layers
 - [ ] Proper layer separation maintained
-**Verify**: `grep -r "Coordinator" server/src/todos/` returns no results
+      **Verify**: `grep -r "Coordinator" server/src/todos/` returns no results
 
 ### AC2: Backward Compatibility
+
 - [ ] All endpoints work identically
 - [ ] Same request/response formats
 - [ ] Same HTTP status codes
 - [ ] Same error handling
-**Verify**: All manual API tests pass
+      **Verify**: All manual API tests pass
 
 ### AC3: Code Quality
+
 - [ ] All tests pass
 - [ ] No TypeScript errors
 - [ ] No lint warnings
 - [ ] Code is cleaner (fewer layers for simple CRUD)
-**Verify**:
+      **Verify**:
+
 ```bash
 npm run test
 npm run build

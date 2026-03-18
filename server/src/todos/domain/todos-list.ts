@@ -1,9 +1,9 @@
-import { Todo } from '@/todos/domain/todo';
+import { Todo } from "@/todos/domain/todo";
 
 export class TodosList {
   private constructor(private readonly list: Todo[]) {
     if (!Array.isArray(list)) {
-      throw new Error('TodosList must be initialized with an array');
+      throw new Error("TodosList must be initialized with an array");
     }
   }
 
@@ -57,9 +57,7 @@ export class TodosList {
   // Derivation: Update todo and return new list
   update(updatedTodo: Todo): TodosList {
     return new TodosList(
-      this.list.map((todo) =>
-        todo.id().equals(updatedTodo.id()) ? updatedTodo : todo,
-      ),
+      this.list.map((todo) => (todo.id().equals(updatedTodo.id()) ? updatedTodo : todo)),
     );
   }
 }

@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Todo } from '@/todos/domain/todo';
-import { TodoId } from '@/todos/domain/todo-id';
-import { TodoRepository } from '@/todos/repository/todo.repository';
+import { Injectable } from "@nestjs/common";
+import { Todo } from "@/todos/domain/todo";
+import { TodoId } from "@/todos/domain/todo-id";
+import { TodoRepository } from "@/todos/repository/todo.repository";
 
 @Injectable()
 export class GetTodoByIdQuery {

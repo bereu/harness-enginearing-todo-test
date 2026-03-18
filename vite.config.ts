@@ -1,16 +1,15 @@
-import { defineConfig } from 'vite-plus';
-import oxlintPlugin from 'vite-plugin-oxlint';
-
+import { defineConfig } from "vite-plus";
+import oxlintPlugin from "vite-plugin-oxlint";
 
 export default defineConfig({
-    plugins: [
+  plugins: [
     oxlintPlugin({
-      configFile: 'oxlint.config.js',
-    })
+      configFile: "oxlint.config.js",
+    }),
   ],
   lint: {
-    ignorePatterns: ['dist/**', 'node_modules/**'],
-    rules: { 'no-console': 'warn' },
-    options: { typeAware: true }
-  }
+    ignorePatterns: ["dist/**", "node_modules/**"],
+    rules: { "no-console": "warn" },
+    options: { typeAware: true },
+  },
 });

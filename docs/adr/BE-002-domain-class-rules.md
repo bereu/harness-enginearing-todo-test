@@ -27,15 +27,19 @@ All Domain classes must adhere to the following foundational rules to remain imm
 Domains are categorized into two specific types based on their underlying data structure:
 
 #### A. Value Domain (Single Value)
+
 Wraps a single primitive or specific value. Primarily used to represent specific domain primitives like IDs or Statuses.
-*   **Property**: Always named `_value` (accessed via `.value()`).
-*   **Example**: `UserId.value()` returns the raw ID string.
+
+- **Property**: Always named `_value` (accessed via `.value()`).
+- **Example**: `UserId.value()` returns the raw ID string.
 
 #### B. List Domain (Collection)
+
 Wraps a collection of other Domain objects to manage list-wide business logic.
-*   **Property**: The main collection is held in a `.list` property.
-*   **Logic**: Provides filtering or orchestration across the collection.
-*   **Example**: `UsersDomain.filterActiveUsers()` returns a new `UsersDomain` containing only active `UserDomain` objects.
+
+- **Property**: The main collection is held in a `.list` property.
+- **Logic**: Provides filtering or orchestration across the collection.
+- **Example**: `UsersDomain.filterActiveUsers()` returns a new `UsersDomain` containing only active `UserDomain` objects.
 
 ## Do's and Don'ts
 

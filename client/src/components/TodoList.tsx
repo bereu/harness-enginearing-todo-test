@@ -1,6 +1,6 @@
-import type { Todo } from '@/types/todo';
-import { TodoItem } from '@/components/TodoItem';
-import './TodoList.css';
+import type { Todo } from "@/types/todo";
+import { TodoItem } from "@/components/TodoItem";
+import "./TodoList.css";
 
 interface TodoListProps {
   todos: Todo[];
@@ -20,9 +20,7 @@ export function TodoList({ todos, isLoading = false, error }: TodoListProps) {
   if (error) {
     return (
       <div className="todo-list-container">
-        <div className="error-message">
-          Failed to load todos: {error}
-        </div>
+        <div className="error-message">Failed to load todos: {error}</div>
       </div>
     );
   }

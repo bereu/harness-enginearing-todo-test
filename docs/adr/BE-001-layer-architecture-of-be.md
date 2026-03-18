@@ -41,53 +41,53 @@ graph TD
     C1 --> C2
     C1 --> Q3
     C1 --> C4
-    
+
     C2 --> Q3
     C2 --> C4
     C2 -.-> DM
-    
+
     Q3 --> R5
     Q3 --> D6
     Q3 -.-> DM
-    
+
     C4 --> R5
     C4 --> D6
     C4 -.-> DM
-    
+
     R5 --> D6
 ```
 
 ### Data Structures & Validation
 
-*   **DTO (Data Transfer Object)**: 
-    *   Used in the **Controller** layer.
-    *   Responsibilities: Mapping API requests to domain objects and performing initial API-level validation (e.g., required fields, basic formats).
-*   **Domain**:
-    *   Used in **Coordinator**, **Query**, and **Command** layers.
-    *   Responsibilities: Encapsulates all business logic and domain rules (e.g., `User` domain with fields like `id`, `name`, `email`).
-    *   **Validation**: Must contain strict business validation logic (e.g., "Name must be between 0 and 200 characters").
+- **DTO (Data Transfer Object)**:
+  - Used in the **Controller** layer.
+  - Responsibilities: Mapping API requests to domain objects and performing initial API-level validation (e.g., required fields, basic formats).
+- **Domain**:
+  - Used in **Coordinator**, **Query**, and **Command** layers.
+  - Responsibilities: Encapsulates all business logic and domain rules (e.g., `User` domain with fields like `id`, `name`, `email`).
+  - **Validation**: Must contain strict business validation logic (e.g., "Name must be between 0 and 200 characters").
 
 ### Access Rules
 
 1.  **Controller**: Entry point. Accesses Coordinator, Query, and Command. Uses DTOs for request handling.
 2.  **Coordinator** (Read/Write): Orchestrates complex flows. Uses Domain objects. The coordinator's sole purpose is the **orchestration** of commands and queries. It must not be used if no orchestration is needed (e.g., merely wrapping a single command or query).
-    *   **Bad** (Just a wrapper, no orchestration):
-        ```typescript
-        class TodoCoordinator {
-          findAll() {
-            return this.todoQuery.findAll(); // It is just a wrapper, not orchestrating.
-          }
+    - **Bad** (Just a wrapper, no orchestration):
+      ```typescript
+      class TodoCoordinator {
+        findAll() {
+          return this.todoQuery.findAll(); // It is just a wrapper, not orchestrating.
         }
-        ```
-    *   **Good** (Orchestrates multiple operations, e.g., Query then Command):
-        ```typescript
-        class ReservationCoordinator {
-          async reserve(id: string) {
-            const user = await this.userRepository.findById(id); 
-            await this.scheduleRepository.reserve(user, 'YYYYMMDD'); // Includes Query and Command. It is OK.
-          }
+      }
+      ```
+    - **Good** (Orchestrates multiple operations, e.g., Query then Command):
+      ```typescript
+      class ReservationCoordinator {
+        async reserve(id: string) {
+          const user = await this.userRepository.findById(id);
+          await this.scheduleRepository.reserve(user, "YYYYMMDD"); // Includes Query and Command. It is OK.
         }
-        ```
+      }
+      ```
 3.  **Query** (Read-only): Data retrieval. Accesses Repository/DataSource. Returns Domain objects.
 4.  **Command** (Write-only): Data modification. Accesses Repository/DataSource. Uses Domain objects.
 5.  **Repository**: Aggregates data for domain-unit access. Accesses DataSource.
@@ -96,8 +96,9 @@ graph TD
 ### Naming Convention
 
 We prioritize naming that reflects **business logic** and domain language over technical implementation details.
-*   **Good**: `reserveSchedules`, `calculateShippingFee`, `cancelOrder`
-*   **Avoid**: `addReservation`, `getShippingTotal`, `deleteOrderEntry`
+
+- **Good**: `reserveSchedules`, `calculateShippingFee`, `cancelOrder`
+- **Avoid**: `addReservation`, `getShippingTotal`, `deleteOrderEntry`
 
 ## Do's and Don'ts
 
