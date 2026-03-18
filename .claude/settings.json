@@ -6,7 +6,10 @@
       "Bash(pnpm vp:*)",
       "Bash(ls -la server/jest* server/tsconfig*)",
       "Bash(curl -s http://localhost:5175/)",
-      "mcp__chrome_devtools__hover"
-    ]
+      "mcp__chrome_devtools__hover",
+      "Read(//Users/soheieto/sandbox/harness-for-todo-app/**)",
+      "Bash(find client:*)"
+    ],
+    "additionalDirectories": ["/tmp"]
   }
 }
