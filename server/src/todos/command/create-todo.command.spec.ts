@@ -14,7 +14,7 @@ describe("CreateTodoCommand", () => {
         {
           provide: TodoRepository,
           useValue: {
-            save: jest.fn(),
+            add: jest.fn(),
           },
         },
       ],
@@ -27,7 +27,7 @@ describe("CreateTodoCommand", () => {
   describe("execute", () => {
     it("should create a todo with title only", () => {
       // Arrange
-      jest.spyOn(repository, "save").mockReturnValue(undefined);
+      jest.spyOn(repository, "add").mockReturnValue(undefined);
 
       // Act
       const result = command.execute("My Todo", undefined);
@@ -38,12 +38,12 @@ describe("CreateTodoCommand", () => {
       expect(result.description()).toBeNull();
       expect(result.completed()).toBe(false);
       expect(result.status()).toBe("todo");
-      expect(repository.save).toHaveBeenCalledWith(result);
+      expect(repository.add).toHaveBeenCalledWith(result);
     });
 
     it("should create a todo with title and description", () => {
       // Arrange
-      jest.spyOn(repository, "save").mockReturnValue(undefined);
+      jest.spyOn(repository, "add").mockReturnValue(undefined);
 
       // Act
       const result = command.execute("My Todo", "This is a description");
@@ -52,13 +52,13 @@ describe("CreateTodoCommand", () => {
       expect(result.title().value()).toBe("My Todo");
       expect(result.description()).toBe("This is a description");
       expect(result.completed()).toBe(false);
-      expect(repository.save).toHaveBeenCalledWith(result);
+      expect(repository.add).toHaveBeenCalledWith(result);
     });
 
     it("should throw error when title is empty", () => {
       // Act & Assert
       expect(() => command.execute("", undefined)).toThrow();
-      expect(repository.save).not.toHaveBeenCalled();
+      expect(repository.add).not.toHaveBeenCalled();
     });
 
     it("should throw error when title exceeds max length", () => {
@@ -67,12 +67,12 @@ describe("CreateTodoCommand", () => {
 
       // Act & Assert
       expect(() => command.execute(tooLongTitle, undefined)).toThrow();
-      expect(repository.save).not.toHaveBeenCalled();
+      expect(repository.add).not.toHaveBeenCalled();
     });
 
     it("should create immutable domain object", () => {
       // Arrange
-      jest.spyOn(repository, "save").mockReturnValue(undefined);
+      jest.spyOn(repository, "add").mockReturnValue(undefined);
 
       // Act
       const result = command.execute("Original Title", "Description");
