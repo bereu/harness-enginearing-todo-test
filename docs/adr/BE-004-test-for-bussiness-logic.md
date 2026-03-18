@@ -18,19 +18,20 @@ To ensure the reliability and correctness of our application, we must have an au
    - **Coordinator** Layer
    - **Query** Layer
    - **Command** Layer
+3. We write test files to `server/test`.
 
 ## Do's and Don'ts
 
 ### Do
 
 - Do write unit tests that cover the core behavior, edge cases, and expected failures within the coordinator, query, and command layers.
-- Do mock or stub external dependencies (e.g., database repositories, external APIs) when unit testing these layers to ensure tests remain fast and isolated.
 - Do use descriptive test names that clearly explain the business rule being verified.
 
 ### Don't
 
 - Don't skip writing unit tests for business logic under the pretext of deadline pressure.
 - Don't tightly couple unit tests to implementation details; focus on testing inputs and expected outputs/behavior.
+- Don't mock bottom layer. ex: system try to test Query, Repository should not be mocked.
 
 ## Consequences
 

@@ -13,7 +13,7 @@ All architectural decisions are documented as ADRs (Architecture Decision Record
 
 ## plan
 
-- we have information `docs/task`
+- we have information `docs/tasks`
 
 ## step
 

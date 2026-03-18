@@ -10,7 +10,7 @@ This skill facilitates a thorough Quality Assurance process for new features or 
 
 ## Core Activities
 
-1.  **AC-to-Test Mapping**: Analyze the `docs/exec-plans/` or specific task requirements to extract all Acceptance Criteria. For each AC, identify the corresponding test file and test case.
+1.  **AC-to-Test Mapping**: Analyze the `docs/tasks/active` or specific task requirements to extract all Acceptance Criteria. For each AC, identify the corresponding test file and test case.
 2.  **Edge Case Identification**: Systematically check for:
     - Boundary conditions (min/max values, empty strings, nulls).
     - Network failure scenarios (retry logic, timeouts).

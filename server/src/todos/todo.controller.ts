@@ -14,9 +14,9 @@ import { UpdateTodoDto } from "@/todos/dto/update-todo.dto";
 import { TodoResponseDto } from "@/todos/dto/todo.response.dto";
 import { GetTodosQuery } from "@/todos/query/get-todos.query";
 import { GetTodoByIdQuery } from "@/todos/query/get-todo-by-id.query";
+import { GetTodosByStatusQuery } from "@/todos/query/get-todos-by-status.query";
 import { CreateTodoCommand } from "@/todos/command/create-todo.command";
 import { UpdateTodoCommand } from "@/todos/command/update-todo.command";
-import { TodoRepository } from "@/todos/repository/todo.repository";
 import { Todo, TodoStatus } from "@/todos/domain/todo";
 import { TodoId } from "@/todos/domain/todo-id";
 
@@ -25,9 +25,9 @@ export class TodoController {
   constructor(
     private readonly getTodosQuery: GetTodosQuery,
     private readonly getTodoByIdQuery: GetTodoByIdQuery,
+    private readonly getTodosByStatusQuery: GetTodosByStatusQuery,
     private readonly createTodoCommand: CreateTodoCommand,
     private readonly updateTodoCommand: UpdateTodoCommand,
-    private readonly todoRepository: TodoRepository,
   ) {}
 
   @Post()
@@ -49,8 +49,8 @@ export class TodoController {
   @Get()
   getTodos(@Query("status") status?: string): TodoResponseDto[] {
     if (status) {
-      const todos = this.todoRepository.findByStatus(status);
-      return todos.map((todo) => this.mapTodoToResponseDto(todo));
+      const todosList = this.getTodosByStatusQuery.execute(status);
+      return todosList.getAll().map((todo) => this.mapTodoToResponseDto(todo));
     }
     const todosList = this.getTodosQuery.execute();
     return todosList.getAll().map((todo) => this.mapTodoToResponseDto(todo));

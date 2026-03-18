@@ -12,7 +12,7 @@ This skill facilitates a structured approach to software development tasks. It b
 
 - **READ exist ADRs** and follow ADR rules `docs/adr/**.md`.
 - **Plan**: Draft the execution plan.
-- **Save**: Save the plan in `docs/task/active/`.
+- **Save**: Save the plan in `docs/tasks/active/`.
 
 The unit should be 'user story' size like "User can read session".
 If it includes multiple user stories, they should be split into separate plans.
