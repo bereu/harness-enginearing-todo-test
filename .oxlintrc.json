@@ -44,6 +44,7 @@
     "typescript/no-var-requires": "error",
     "typescript/prefer-as-const": "error",
     "typescript/prefer-for-of": "error",
+    "typescript/prefer-switch": "error",
     "typescript/prefer-function-type": "error",
     "typescript/prefer-namespace-keyword": "error",
     "typescript/triple-slash-reference": "error",

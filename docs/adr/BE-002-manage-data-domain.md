@@ -1,11 +1,11 @@
 ---
 id: BE-002
-title: domain class rules
+title: domain rules
 domain: backend
 rules: true
 ---
 
-# Domain Class Rules
+# Domain Rules
 
 ## Context
 
@@ -22,24 +22,87 @@ All Domain classes must adhere to the following foundational rules to remain imm
 3.  **Self-Validation**: Validation logic must be executed within the **constructor**. If any value is invalid, the constructor must throw an error, ensuring that an invalid domain object can never exist in memory.
 4.  **Derivation Methods**: Domains can have methods for calculations or combining data (e.g., `user.fullName() => user.firstName + user.lastName`).
 
-### Domain Types
+## example
 
-Domains are categorized into two specific types based on their underlying data structure:
+```typescript
+import { TodoId } from "@/todos/domain/todo-id";
+import { TodoTitle } from "@/todos/domain/todo-title";
 
-#### A. Value Domain (Single Value)
+export const VALID_STATUSES = ["todo", "in-progress", "done"] as const;
+export type TodoStatus = (typeof VALID_STATUSES)[number];
 
-Wraps a single primitive or specific value. Primarily used to represent specific domain primitives like IDs or Statuses.
+const DEFAULT_STATUS: TodoStatus = "todo";
 
-- **Property**: Always named `_value` (accessed via `.value()`).
-- **Example**: `UserId.value()` returns the raw ID string.
+export class Todo {
+  private constructor(
+    private readonly _id: TodoId,
+    private readonly _title: TodoTitle,
+    private readonly _description: string | null,
+    private readonly _completed: boolean,
+    private readonly _createdAt: Date,
+    private readonly _status: TodoStatus,
+  ) {}
 
-#### B. List Domain (Collection)
+  static create(
+    title: string,
+    description?: string | null,
+    id?: string,
+    status?: TodoStatus,
+  ): Todo {
+    const todoId = TodoId.create(id);
+    const todoTitle = TodoTitle.create(title);
+    const validatedStatus = this.validateStatus(status || DEFAULT_STATUS);
 
-Wraps a collection of other Domain objects to manage list-wide business logic.
+    return new Todo(todoId, todoTitle, description || null, false, new Date(), validatedStatus);
+  }
 
-- **Property**: The main collection is held in a `.list` property.
-- **Logic**: Provides filtering or orchestration across the collection.
-- **Example**: `UsersDomain.filterActiveUsers()` returns a new `UsersDomain` containing only active `UserDomain` objects.
+  static reconstruct(
+    id: string,
+    title: string,
+    description: string | null,
+    completed: boolean,
+    createdAt: Date,
+    status?: TodoStatus,
+  ): Todo {
+    const todoId = TodoId.of(id);
+    const todoTitle = TodoTitle.create(title);
+    const validatedStatus = this.validateStatus(status || DEFAULT_STATUS);
+
+    return new Todo(todoId, todoTitle, description, completed, createdAt, validatedStatus);
+  }
+
+  id(): TodoId {
+    return this._id;
+  }
+
+  title(): TodoTitle {
+    return this._title;
+  }
+
+  description(): string | null {
+    return this._description;
+  }
+
+  completed(): boolean {
+    return this._completed;
+  }
+
+  createdAt(): Date {
+    return this._createdAt;
+  }
+
+  status(): TodoStatus {
+    return this._status;
+  }
+
+  private static validateStatus(status: string): TodoStatus {
+    if (!VALID_STATUSES.includes(status as TodoStatus)) {
+      throw new Error(`Invalid status: ${status}. Must be one of: ${VALID_STATUSES.join(", ")}`);
+    }
+    return status as TodoStatus;
+  }
+}
+```
 
 ## Do's and Don'ts
 
@@ -47,7 +110,6 @@ Wraps a collection of other Domain objects to manage list-wide business logic.
 
 - Throw errors in the constructor if input values violate business rules.
 - Use private fields with public getters for all properties.
-- Create specific Value Domains for important identifiers (e.g., `OrderId`, `EmailAddress`).
 - Implement descriptive methods for calculated values rather than letting consumers calculate them.
 
 ### Don't
@@ -68,10 +130,6 @@ Wraps a collection of other Domain objects to manage list-wide business logic.
 
 - **Verbose Initialization**: Constructors can become large when many properties are required.
 - **Mapping Overhead**: Requires more mapping logic when converting from DataSources or DTOs.
-
-### Risks
-
-- Potential performance impact if deep-validating extremely large lists (mitigated by efficient list domain logic).
 
 ## Compliance and Enforcement
 
