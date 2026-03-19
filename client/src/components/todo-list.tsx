@@ -6,9 +6,10 @@ interface TodoListProps {
   todos: Todo[];
   isLoading?: boolean;
   error?: string;
+  onEdit?: (todo: Todo) => void;
 }
 
-export function TodoList({ todos, isLoading = false, error }: TodoListProps) {
+export function TodoList({ todos, isLoading = false, error, onEdit }: TodoListProps) {
   if (isLoading) {
     return (
       <div className="todo-list-container">
@@ -41,7 +42,7 @@ export function TodoList({ todos, isLoading = false, error }: TodoListProps) {
       <ul className="todo-list">
         {todos.map((todo) => (
           <li key={todo.id}>
-            <TodoItem todo={todo} />
+            <TodoItem todo={todo} onEdit={onEdit} />
           </li>
         ))}
       </ul>

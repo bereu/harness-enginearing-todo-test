@@ -4,10 +4,11 @@ import "./TodoItem.css";
 
 interface TodoItemProps {
   todo: Todo;
+  onEdit?: (todo: Todo) => void;
   onStatusChange?: (status: string) => void;
 }
 
-export function TodoItem({ todo }: TodoItemProps) {
+export function TodoItem({ todo, onEdit }: TodoItemProps) {
   const createdDate = new Date(todo.createdAt).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -17,8 +18,26 @@ export function TodoItem({ todo }: TodoItemProps) {
   const statusLabel = STATUS_LABELS[todo.status];
   const statusColor = STATUS_COLORS[todo.status];
 
+  const handleClick = () => {
+    if (onEdit) {
+      onEdit(todo);
+    }
+  };
+
   return (
-    <div className="todo-item">
+    <div
+      className="todo-item"
+      onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      style={{ cursor: onEdit ? "pointer" : "default" }}
+    >
       <div className="todo-content">
         <h3 className="todo-title">{todo.title}</h3>
         {todo.description && <p className="todo-description">{todo.description}</p>}
