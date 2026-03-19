@@ -46,7 +46,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       const errorResponse = exception.getResponse();
       message =
         typeof errorResponse === "object"
-          ? (errorResponse as any).message || exception.message
+          ? (errorResponse as unknown as { message?: string }).message || exception.message
           : exception.message;
 
       // Only log 5xx errors from HttpException

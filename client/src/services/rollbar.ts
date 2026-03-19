@@ -26,7 +26,6 @@ export const logErrorToRollbar = (
   context?: ErrorContext,
 ) => {
   if (!rollbarService) {
-    console.error(`[Rollbar] ${error}`, context);
     return;
   }
 
@@ -52,7 +51,9 @@ export const logApiError = (
   },
 ) => {
   const errorMessage =
-    typeof error === "string" ? error : (error as any)?.message || "Unknown error";
+    typeof error === "string"
+      ? error
+      : (error as unknown as { message?: string })?.message || "Unknown error";
 
   logErrorToRollbar(errorMessage, "error", {
     errorType: "api_error",

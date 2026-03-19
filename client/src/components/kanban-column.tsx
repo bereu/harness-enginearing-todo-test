@@ -1,6 +1,6 @@
 import type { Todo, TodoStatus } from "@/types/todo";
 import { STATUS_LABELS } from "@/constants/todo-statuses";
-import { KanbanCard } from "./KanbanCard";
+import { KanbanCard } from "./kanban-card";
 import "./KanbanColumn.css";
 
 interface KanbanColumnProps {

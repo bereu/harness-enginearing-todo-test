@@ -29,7 +29,6 @@ export class RollbarService {
 
   logError(error: Error | string, context?: ErrorContext): void {
     if (!this.rollbar) {
-      console.error(`[Rollbar] ${error}`, context);
       return;
     }
 
@@ -43,7 +42,6 @@ export class RollbarService {
 
   logBusinessLogicError(message: string, context?: ErrorContext): void {
     if (!this.rollbar) {
-      console.warn(`[BusinessLogic] ${message}`, context);
       return;
     }
 
@@ -54,7 +52,6 @@ export class RollbarService {
 
   logSystemError(error: Error | string, context?: ErrorContext): void {
     if (!this.rollbar) {
-      console.error(`[SystemError] ${error}`, context);
       return;
     }
 

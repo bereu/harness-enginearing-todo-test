@@ -1,27 +1,18 @@
 import { defineConfig } from "oxlint";
 import noRelativeImportPaths from "eslint-plugin-no-relative-import-paths";
+import customRules from "./plugins/custom-rules.js";
+import oxlintRules from "./.oxlintrc.json";
 
+// eslint-disable-next-line eslint-plugin-import/no-default-export
 export default defineConfig({
-  globalIgnores: [
-    "dist",
-    "node_modules",
-    ".next",
-    "coverage",
-    "**/*.d.ts",
-    "**/*.config.*",
-    "vite.config.ts",
-    "tsconfig.json",
-  ],
-  plugins: ["react", "typescript", "unicorn"],
+  ...oxlintRules,
   rules: {
-    "no-debugger": "error",
-    "no-console": "warn",
-    "typescript/no-explicit-any": "error",
+    ...oxlintRules.rules,
     "no-relative-import-paths/no-relative-import-paths": "error",
+    "custom-rules/named-export": "error",
+    "custom-rules/directory-structure": "error",
   },
-  // Use ESLint plugin via jsPlugins
-  jsPlugins: [noRelativeImportPaths],
-  // Override settings for specific paths
+  jsPlugins: [noRelativeImportPaths, customRules],
   overrides: [
     {
       files: ["server/src/**/*.ts"],
@@ -31,6 +22,12 @@ export default defineConfig({
       files: ["client/src/**/*.tsx", "client/src/**/*.ts"],
       plugins: ["react"],
       settings: {},
+    },
+    {
+      files: ["server/test/**/*.ts"],
+      rules: {
+        "typescript/unbound-method": "off",
+      },
     },
   ],
 });

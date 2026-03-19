@@ -1,5 +1,4 @@
-import axios from "axios";
-import type { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, { type AxiosInstance, type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { logApiError } from "@/services/rollbar";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
@@ -71,24 +70,24 @@ class HttpClient {
     );
   }
 
-  get<T>(url: string, config?: any) {
-    return this.instance.get<T>(url, config);
+  get<T>(url: string, config?: unknown) {
+    return this.instance.get<T>(url, config as InternalAxiosRequestConfig);
   }
 
-  post<T>(url: string, data?: any, config?: any) {
-    return this.instance.post<T>(url, data, config);
+  post<T>(url: string, data?: unknown, config?: unknown) {
+    return this.instance.post<T>(url, data, config as InternalAxiosRequestConfig);
   }
 
-  patch<T>(url: string, data?: any, config?: any) {
-    return this.instance.patch<T>(url, data, config);
+  patch<T>(url: string, data?: unknown, config?: unknown) {
+    return this.instance.patch<T>(url, data, config as InternalAxiosRequestConfig);
   }
 
-  put<T>(url: string, data?: any, config?: any) {
-    return this.instance.put<T>(url, data, config);
+  put<T>(url: string, data?: unknown, config?: unknown) {
+    return this.instance.put<T>(url, data, config as InternalAxiosRequestConfig);
   }
 
-  delete<T>(url: string, config?: any) {
-    return this.instance.delete<T>(url, config);
+  delete<T>(url: string, config?: unknown) {
+    return this.instance.delete<T>(url, config as InternalAxiosRequestConfig);
   }
 }
 

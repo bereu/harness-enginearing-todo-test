@@ -1,5 +1,5 @@
 import type { Todo, CreateTodoPayload, TodoStatus } from "@/types/todo";
-import { httpClient } from "@/services/httpClient";
+import { httpClient } from "@/services/http-client";
 
 interface UpdateTodoPayload {
   title?: string;

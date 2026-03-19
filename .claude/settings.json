@@ -8,7 +8,9 @@
       "Bash(curl -s http://localhost:5175/)",
       "mcp__chrome_devtools__hover",
       "Read(//Users/soheieto/sandbox/harness-for-todo-app/**)",
-      "Bash(find client:*)"
+      "Bash(find client:*)",
+      "Bash(mv -f App.tsx app.tsx)",
+      "Bash(sed -i '' 's|from \"\"@/App\"\"|from \"\"@/app\"\"|g' *.tsx)"
     ],
     "additionalDirectories": ["/tmp"]
   }

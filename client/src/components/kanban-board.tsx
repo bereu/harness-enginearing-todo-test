@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Todo, TodoStatus } from "@/types/todo";
 import { TODO_STATUSES } from "@/constants/todo-statuses";
-import { KanbanColumn } from "./KanbanColumn";
+import { KanbanColumn } from "./kanban-column";
 import "./KanbanBoard.css";
 
 interface KanbanBoardProps {

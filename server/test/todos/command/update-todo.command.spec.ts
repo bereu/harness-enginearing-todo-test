@@ -107,9 +107,10 @@ describe("UpdateTodoCommand", () => {
       jest.spyOn(repository, "getById").mockReturnValue(originalTodo);
 
       // Act & Assert
-      expect(() =>
-        command.execute("1", undefined, undefined, undefined, "invalid" as any),
-      ).toThrow();
+      expect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        command.execute("1", undefined, undefined, undefined, "invalid" as any);
+      }).toThrow();
     });
 
     it("should preserve immutability of original todo", () => {

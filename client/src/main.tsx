@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "@/App.tsx";
-import { rollbarService, logErrorToRollbar } from "@/services/rollbar";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
+import App from "@/app.tsx";
+import { logErrorToRollbar } from "@/services/rollbar";
+import { ErrorBoundary } from "@/components/error-boundary";
 
 // Initialize Rollbar (if token is provided and in production)
 

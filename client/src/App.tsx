@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { TodoForm } from "@/components/TodoForm";
-import { TodoList } from "@/components/TodoList";
-import { KanbanBoard } from "@/components/KanbanBoard";
-import { todoService } from "@/services/todoService";
+import { TodoForm } from "@/components/todo-form";
+import { TodoList } from "@/components/todo-list";
+import { KanbanBoard } from "@/components/kanban-board";
+import { todoService } from "@/services/todo-service";
 import type { Todo, CreateTodoPayload, TodoStatus } from "@/types/todo";
 import "./App.css";
 
@@ -98,4 +98,4 @@ function App() {
   );
 }
 
-export default App;
+export { App };
