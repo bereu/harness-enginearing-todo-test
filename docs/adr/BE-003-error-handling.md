@@ -1,6 +1,6 @@
 ---
 id: BE-003
-title: Error-handling-with-Rollbar
+title: Error-handling
 domain: backend
 rules: true
 ---

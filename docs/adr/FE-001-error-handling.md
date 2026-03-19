@@ -1,6 +1,6 @@
 ---
 id: FE-001
-title: Error-handling-with-Rollbar
+title: Error-handling
 domain: frontend
 rules: true
 ---
