@@ -136,3 +136,80 @@
   font-size: 12px;
   margin-top: 4px;
 }
+
+.add-status-button {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: none;
+  border: 1px dashed #646cff;
+  border-radius: 4px;
+  color: #646cff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-status-button:hover:not(:disabled) {
+  background-color: rgba(100, 108, 255, 0.06);
+}
+
+.add-status-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.add-status-inline {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.add-status-input {
+  margin-top: 0;
+}
+
+.add-status-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.confirm-status-button,
+.cancel-status-button {
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.confirm-status-button {
+  background-color: #646cff;
+  color: white;
+}
+
+.confirm-status-button:hover:not(:disabled) {
+  background-color: #535bf2;
+}
+
+.confirm-status-button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.cancel-status-button {
+  background-color: #e5e7eb;
+  color: #333;
+}
+
+.cancel-status-button:hover:not(:disabled) {
+  background-color: #d1d5db;
+}
+
+.cancel-status-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,5 +1,10 @@
-import { IsString, IsOptional, MaxLength, IsBoolean, IsIn } from "class-validator";
-import { VALID_STATUSES } from "@/todos/domain/todo";
+import {
+  IsString,
+  IsOptional,
+  MaxLength,
+  IsBoolean,
+  IsNotEmpty,
+} from 'class-validator';
 
 export class UpdateTodoDto {
   @IsOptional()
@@ -17,6 +22,7 @@ export class UpdateTodoDto {
 
   @IsOptional()
   @IsString()
-  @IsIn(VALID_STATUSES)
+  @IsNotEmpty()
+  @MaxLength(50)
   status?: string;
 }

@@ -5,7 +5,7 @@ export class BusinessLogicError extends Error {
     readonly code?: string,
   ) {
     super(message);
-    this.name = "BusinessLogicError";
+    this.name = 'BusinessLogicError';
     Object.setPrototypeOf(this, BusinessLogicError.prototype);
   }
 }

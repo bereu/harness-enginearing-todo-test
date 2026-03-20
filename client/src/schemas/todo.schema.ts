@@ -1,7 +1,4 @@
 import { z } from "zod";
-import type { TodoStatus } from "@/types/todo";
-
-const TODO_STATUSES: TodoStatus[] = ["todo", "in-progress", "done"];
 
 export const CreateTodoSchema = z.object({
   title: z
@@ -15,7 +12,7 @@ export const CreateTodoSchema = z.object({
     .max(2000, "Description must be no longer than 2000 characters")
     .optional()
     .nullable(),
-  status: z.enum(TODO_STATUSES).optional().default("todo"),
+  status: z.string().min(1).max(50).optional().default("todo"),
 });
 
 export const UpdateTodoSchema = z.object({
@@ -32,7 +29,7 @@ export const UpdateTodoSchema = z.object({
     .optional()
     .nullable(),
   completed: z.boolean().optional(),
-  status: z.enum(TODO_STATUSES).optional(),
+  status: z.string().min(1).max(50).optional(),
 });
 
 export type CreateTodoInput = z.infer<typeof CreateTodoSchema>;

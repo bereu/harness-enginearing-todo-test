@@ -14,5 +14,10 @@ This skill facilitates a structured approach to software development tasks. It b
 - **Plan**: Draft the execution plan.
 - **Save**: Save the plan in `docs/tasks/active/`.
 
+## File Name
+
+- **User story names** the file name should be user story. ex: User-can-update-todos
+- **Refactoring/Bug fix names** the file name should be fix-name. ex: fix-edit-bugs/ refactor todo domains.
+
 The unit should be 'user story' size like "User can read session".
 If it includes multiple user stories, they should be split into separate plans.

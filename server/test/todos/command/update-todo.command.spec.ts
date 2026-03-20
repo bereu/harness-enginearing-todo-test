@@ -1,9 +1,9 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { UpdateTodoCommand } from "@/todos/command/update-todo.command";
-import { TodoRepository } from "@/todos/repository/todo.repository";
-import { Todo } from "@/todos/domain/todo";
+import { Test, TestingModule } from '@nestjs/testing';
+import { UpdateTodoCommand } from '@/todos/command/update-todo.command';
+import { TodoRepository } from '@/todos/repository/todo.repository';
+import { Todo } from '@/todos/domain/todo';
 
-describe("UpdateTodoCommand", () => {
+describe('UpdateTodoCommand', () => {
   let command: UpdateTodoCommand;
   let repository: TodoRepository;
 
@@ -25,105 +25,110 @@ describe("UpdateTodoCommand", () => {
     repository = module.get<TodoRepository>(TodoRepository);
   });
 
-  describe("execute", () => {
+  describe('execute', () => {
     const originalTodo = Todo.reconstruct(
-      "1",
-      "Original Title",
-      "Original Description",
+      '1',
+      'Original Title',
+      'Original Description',
       false,
       new Date(),
-      "todo",
+      'todo',
     );
 
-    it("should update title", () => {
+    it('should update title', () => {
       // Arrange
-      jest.spyOn(repository, "getById").mockReturnValue(originalTodo);
-      jest.spyOn(repository, "update").mockReturnValue(undefined);
+      jest.spyOn(repository, 'getById').mockReturnValue(originalTodo);
+      jest.spyOn(repository, 'update').mockReturnValue(undefined);
 
       // Act
-      const result = command.execute("1", "Updated Title");
+      const result = command.execute('1', 'Updated Title');
 
       // Assert
-      expect(result?.title().value()).toBe("Updated Title");
-      expect(result?.description()).toBe("Original Description");
+      expect(result?.title().value()).toBe('Updated Title');
+      expect(result?.description()).toBe('Original Description');
       expect(repository.update).toHaveBeenCalledWith(result);
     });
 
-    it("should update description", () => {
+    it('should update description', () => {
       // Arrange
-      jest.spyOn(repository, "getById").mockReturnValue(originalTodo);
-      jest.spyOn(repository, "update").mockReturnValue(undefined);
+      jest.spyOn(repository, 'getById').mockReturnValue(originalTodo);
+      jest.spyOn(repository, 'update').mockReturnValue(undefined);
 
       // Act
-      const result = command.execute("1", undefined, "Updated Description");
+      const result = command.execute('1', undefined, 'Updated Description');
 
       // Assert
-      expect(result?.title().value()).toBe("Original Title");
-      expect(result?.description()).toBe("Updated Description");
+      expect(result?.title().value()).toBe('Original Title');
+      expect(result?.description()).toBe('Updated Description');
       expect(repository.update).toHaveBeenCalledWith(result);
     });
 
-    it("should update status", () => {
+    it('should update status', () => {
       // Arrange
-      jest.spyOn(repository, "getById").mockReturnValue(originalTodo);
-      jest.spyOn(repository, "update").mockReturnValue(undefined);
+      jest.spyOn(repository, 'getById').mockReturnValue(originalTodo);
+      jest.spyOn(repository, 'update').mockReturnValue(undefined);
 
       // Act
-      const result = command.execute("1", undefined, undefined, undefined, "done");
+      const result = command.execute(
+        '1',
+        undefined,
+        undefined,
+        undefined,
+        'done',
+      );
 
       // Assert
-      expect(result?.status()).toBe("done");
-      expect(result?.title().value()).toBe("Original Title");
+      expect(result?.status()).toBe('done');
+      expect(result?.title().value()).toBe('Original Title');
       expect(repository.update).toHaveBeenCalledWith(result);
     });
 
-    it("should update completed flag", () => {
+    it('should update completed flag', () => {
       // Arrange
-      jest.spyOn(repository, "getById").mockReturnValue(originalTodo);
-      jest.spyOn(repository, "update").mockReturnValue(undefined);
+      jest.spyOn(repository, 'getById').mockReturnValue(originalTodo);
+      jest.spyOn(repository, 'update').mockReturnValue(undefined);
 
       // Act
-      const result = command.execute("1", undefined, undefined, true);
+      const result = command.execute('1', undefined, undefined, true);
 
       // Assert
       expect(result?.completed()).toBe(true);
       expect(repository.update).toHaveBeenCalledWith(result);
     });
 
-    it("should return null when todo not found", () => {
+    it('should return null when todo not found', () => {
       // Arrange
-      jest.spyOn(repository, "getById").mockReturnValue(null);
+      jest.spyOn(repository, 'getById').mockReturnValue(null);
 
       // Act
-      const result = command.execute("non-existent", "New Title");
+      const result = command.execute('non-existent', 'New Title');
 
       // Assert
       expect(result).toBeNull();
       expect(repository.update).not.toHaveBeenCalled();
     });
 
-    it("should throw error when invalid status is provided", () => {
+    it('should throw error when empty status is provided', () => {
       // Arrange
-      jest.spyOn(repository, "getById").mockReturnValue(originalTodo);
+      jest.spyOn(repository, 'getById').mockReturnValue(originalTodo);
 
       // Act & Assert
       expect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        command.execute("1", undefined, undefined, undefined, "invalid" as any);
+        command.execute('1', undefined, undefined, undefined, '');
       }).toThrow();
     });
 
-    it("should preserve immutability of original todo", () => {
+    it('should preserve immutability of original todo', () => {
       // Arrange
-      jest.spyOn(repository, "getById").mockReturnValue(originalTodo);
-      jest.spyOn(repository, "update").mockReturnValue(undefined);
+      jest.spyOn(repository, 'getById').mockReturnValue(originalTodo);
+      jest.spyOn(repository, 'update').mockReturnValue(undefined);
 
       // Act
-      const updated = command.execute("1", "New Title");
+      const updated = command.execute('1', 'New Title');
 
       // Assert
-      expect(originalTodo.title().value()).toBe("Original Title");
-      expect(updated?.title().value()).toBe("New Title");
+      expect(originalTodo.title().value()).toBe('Original Title');
+      expect(updated?.title().value()).toBe('New Title');
       expect(originalTodo).not.toBe(updated);
     });
   });

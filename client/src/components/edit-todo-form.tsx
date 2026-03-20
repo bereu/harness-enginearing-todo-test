@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { z } from "zod";
-import type { Todo, TodoStatus } from "@/types/todo";
+import type { Todo } from "@/types/todo";
 import { UpdateTodoSchema } from "@/schemas/todo.schema";
-import { TODO_STATUSES, STATUS_LABELS } from "@/constants/todo-statuses";
+import { useStatuses } from "@/hooks/use-statuses";
+import { AddStatusInline } from "@/components/add-status-inline";
 import "./EditTodoForm.css";
 
 interface EditTodoFormProps {
   todo: Todo;
   onSubmit: (
     id: string,
-    payload: { title?: string; description?: string | null; status?: TodoStatus },
+    payload: { title?: string; description?: string | null; status?: string },
   ) => Promise<void>;
   onCancel: () => void;
   isLoading?: boolean;
@@ -31,8 +32,11 @@ export function EditTodoForm({
 }: EditTodoFormProps) {
   const [title, setTitle] = useState(todo.title);
   const [description, setDescription] = useState(todo.description || "");
-  const [status, setStatus] = useState<TodoStatus>(todo.status);
+  const [status, setStatus] = useState(todo.status);
   const [validationErrors, setValidationErrors] = useState<FormErrors>({});
+  const [isAddingStatus, setIsAddingStatus] = useState(false);
+
+  const { statuses, createStatus } = useStatuses();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,6 +66,13 @@ export function EditTodoForm({
         setValidationErrors(errors);
       }
     }
+  };
+
+  const handleNewStatusConfirm = async (label: string) => {
+    const created = await createStatus(label);
+    setStatus(created.slug);
+    setIsAddingStatus(false);
+    return created;
   };
 
   return (
@@ -117,15 +128,15 @@ export function EditTodoForm({
         <select
           id="edit-status"
           value={status}
-          onChange={(e) => setStatus(e.target.value as TodoStatus)}
-          disabled={isLoading}
+          onChange={(e) => setStatus(e.target.value)}
+          disabled={isLoading || isAddingStatus}
           className={`form-select ${validationErrors.status ? "input-error" : ""}`}
           aria-invalid={!!validationErrors.status}
           aria-describedby={validationErrors.status ? "edit-status-error" : undefined}
         >
-          {TODO_STATUSES.map((s) => (
-            <option key={s} value={s}>
-              {STATUS_LABELS[s]}
+          {statuses.map((s) => (
+            <option key={s.slug} value={s.slug}>
+              {s.label}
             </option>
           ))}
         </select>
@@ -133,6 +144,24 @@ export function EditTodoForm({
           <div id="edit-status-error" className="field-error">
             {validationErrors.status}
           </div>
+        )}
+
+        {!isAddingStatus && (
+          <button
+            type="button"
+            className="add-status-button"
+            onClick={() => setIsAddingStatus(true)}
+            disabled={isLoading}
+          >
+            + Add new status
+          </button>
+        )}
+
+        {isAddingStatus && (
+          <AddStatusInline
+            onConfirm={handleNewStatusConfirm}
+            onCancel={() => setIsAddingStatus(false)}
+          />
         )}
       </div>
 

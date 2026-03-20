@@ -1,10 +1,10 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { GetTodoByIdQuery } from "@/todos/query/get-todo-by-id.query";
-import { TodoRepository } from "@/todos/repository/todo.repository";
-import { Todo } from "@/todos/domain/todo";
-import { TodoId } from "@/todos/domain/todo-id";
+import { Test, TestingModule } from '@nestjs/testing';
+import { GetTodoByIdQuery } from '@/todos/query/get-todo-by-id.query';
+import { TodoRepository } from '@/todos/repository/todo.repository';
+import { Todo } from '@/todos/domain/todo';
+import { TodoId } from '@/todos/domain/todo-id';
 
-describe("GetTodoByIdQuery", () => {
+describe('GetTodoByIdQuery', () => {
   let query: GetTodoByIdQuery;
   let repository: TodoRepository;
 
@@ -25,12 +25,18 @@ describe("GetTodoByIdQuery", () => {
     repository = module.get<TodoRepository>(TodoRepository);
   });
 
-  describe("execute", () => {
-    it("should return a todo when it exists", () => {
+  describe('execute', () => {
+    it('should return a todo when it exists', () => {
       // Arrange
-      const mockTodo = Todo.reconstruct("1", "Test Todo", "Test Description", false, new Date());
-      const todoId = TodoId.of("1");
-      jest.spyOn(repository, "getById").mockReturnValue(mockTodo);
+      const mockTodo = Todo.reconstruct(
+        '1',
+        'Test Todo',
+        'Test Description',
+        false,
+        new Date(),
+      );
+      const todoId = TodoId.of('1');
+      jest.spyOn(repository, 'getById').mockReturnValue(mockTodo);
 
       // Act
       const result = query.execute(todoId);
@@ -38,14 +44,14 @@ describe("GetTodoByIdQuery", () => {
       // Assert
       expect(repository.getById).toHaveBeenCalledWith(todoId);
       expect(result).toBeInstanceOf(Todo);
-      expect(result?.id().value()).toBe("1");
-      expect(result?.title().value()).toBe("Test Todo");
+      expect(result?.id().value()).toBe('1');
+      expect(result?.title().value()).toBe('Test Todo');
     });
 
-    it("should return null when todo does not exist", () => {
+    it('should return null when todo does not exist', () => {
       // Arrange
-      jest.spyOn(repository, "getById").mockReturnValue(null);
-      const todoId = TodoId.of("non-existent-id");
+      jest.spyOn(repository, 'getById').mockReturnValue(null);
+      const todoId = TodoId.of('non-existent-id');
 
       // Act
       const result = query.execute(todoId);
@@ -55,28 +61,28 @@ describe("GetTodoByIdQuery", () => {
       expect(result).toBeNull();
     });
 
-    it("should return a todo with all domain properties intact", () => {
+    it('should return a todo with all domain properties intact', () => {
       // Arrange
-      const createdAt = new Date("2024-01-01");
+      const createdAt = new Date('2024-01-01');
       const mockTodo = Todo.reconstruct(
-        "1",
-        "Complete Task",
-        "Long description",
+        '1',
+        'Complete Task',
+        'Long description',
         true,
         createdAt,
-        "done",
+        'done',
       );
-      const todoId = TodoId.of("1");
-      jest.spyOn(repository, "getById").mockReturnValue(mockTodo);
+      const todoId = TodoId.of('1');
+      jest.spyOn(repository, 'getById').mockReturnValue(mockTodo);
 
       // Act
       const result = query.execute(todoId);
 
       // Assert
       expect(result?.completed()).toBe(true);
-      expect(result?.description()).toBe("Long description");
+      expect(result?.description()).toBe('Long description');
       expect(result?.createdAt()).toEqual(createdAt);
-      expect(result?.status()).toBe("done");
+      expect(result?.status()).toBe('done');
     });
   });
 });

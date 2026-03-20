@@ -2,6 +2,8 @@ import { useState } from "react";
 import { z } from "zod";
 import type { CreateTodoPayload } from "@/types/todo";
 import { CreateTodoSchema } from "@/schemas/todo.schema";
+import { useStatuses } from "@/hooks/use-statuses";
+import { AddStatusInline } from "@/components/add-status-inline";
 import "./TodoForm.css";
 
 interface TodoFormProps {
@@ -18,7 +20,11 @@ interface FormErrors {
 export function TodoForm({ onSubmit, isLoading = false, error }: TodoFormProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("todo");
   const [validationErrors, setValidationErrors] = useState<FormErrors>({});
+  const [isAddingStatus, setIsAddingStatus] = useState(false);
+
+  const { statuses, createStatus } = useStatuses();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,14 +34,17 @@ export function TodoForm({ onSubmit, isLoading = false, error }: TodoFormProps) 
       const validated = CreateTodoSchema.parse({
         title,
         description: description || undefined,
+        status,
       });
 
       await onSubmit({
         title: validated.title,
         description: validated.description || undefined,
+        status: validated.status,
       });
       setTitle("");
       setDescription("");
+      setStatus("todo");
     } catch (err) {
       if (err instanceof z.ZodError) {
         const errors: FormErrors = {};
@@ -48,6 +57,13 @@ export function TodoForm({ onSubmit, isLoading = false, error }: TodoFormProps) 
         setValidationErrors(errors);
       }
     }
+  };
+
+  const handleNewStatusConfirm = async (label: string) => {
+    const created = await createStatus(label);
+    setStatus(created.slug);
+    setIsAddingStatus(false);
+    return created;
   };
 
   return (
@@ -95,6 +111,41 @@ export function TodoForm({ onSubmit, isLoading = false, error }: TodoFormProps) 
           <div id="description-error" className="field-error">
             {validationErrors.description}
           </div>
+        )}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="status">Status</label>
+        <select
+          id="status"
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          disabled={isLoading || isAddingStatus}
+          className="form-select"
+        >
+          {statuses.map((s) => (
+            <option key={s.slug} value={s.slug}>
+              {s.label}
+            </option>
+          ))}
+        </select>
+
+        {!isAddingStatus && (
+          <button
+            type="button"
+            className="add-status-button"
+            onClick={() => setIsAddingStatus(true)}
+            disabled={isLoading}
+          >
+            + Add new status
+          </button>
+        )}
+
+        {isAddingStatus && (
+          <AddStatusInline
+            onConfirm={handleNewStatusConfirm}
+            onCancel={() => setIsAddingStatus(false)}
+          />
         )}
       </div>
 

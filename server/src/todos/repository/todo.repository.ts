@@ -1,7 +1,10 @@
-import { Injectable } from "@nestjs/common";
-import { Todo, TodoStatus } from "@/todos/domain/todo";
-import { TodoId } from "@/todos/domain/todo-id";
-import { TodoDataSource, TodoDataSourceModel } from "@/todos/datasource/todo.datasource";
+import { Injectable } from '@nestjs/common';
+import { Todo, TodoStatus } from '@/todos/domain/todo';
+import { TodoId } from '@/todos/domain/todo-id';
+import {
+  TodoDataSource,
+  TodoDataSourceModel,
+} from '@/todos/datasource/todo.datasource';
 
 @Injectable()
 export class TodoRepository {

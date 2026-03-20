@@ -1,5 +1,5 @@
 import type { Todo, TodoStatus } from "@/types/todo";
-import { STATUS_LABELS } from "@/constants/todo-statuses";
+import { getStatusLabel } from "@/constants/todo-statuses";
 import { KanbanCard } from "./kanban-card";
 import "./KanbanColumn.css";
 
@@ -37,7 +37,7 @@ export function KanbanColumn({
     }
   };
 
-  const statusLabel = STATUS_LABELS[status];
+  const statusLabel = getStatusLabel(status);
   const columnTodos = todos.filter((todo) => todo.status === status);
 
   return (

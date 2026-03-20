@@ -1,11 +1,10 @@
-import type { Todo } from "../types/todo";
-import { STATUS_LABELS, STATUS_COLORS } from "@/constants/todo-statuses";
+import type { Todo } from "@/types/todo";
+import { getStatusLabel, getStatusColor } from "@/constants/todo-statuses";
 import "./TodoItem.css";
 
 interface TodoItemProps {
   todo: Todo;
   onEdit?: (todo: Todo) => void;
-  onStatusChange?: (status: string) => void;
 }
 
 export function TodoItem({ todo, onEdit }: TodoItemProps) {
@@ -15,8 +14,8 @@ export function TodoItem({ todo, onEdit }: TodoItemProps) {
     day: "numeric",
   });
 
-  const statusLabel = STATUS_LABELS[todo.status];
-  const statusColor = STATUS_COLORS[todo.status];
+  const statusLabel = getStatusLabel(todo.status);
+  const statusColor = getStatusColor(todo.status);
 
   const handleClick = () => {
     if (onEdit) {

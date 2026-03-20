@@ -23,8 +23,6 @@ Read `docs/adr/**.md` And follow ADR rules.
 
 ### Step 3 — Implement action items
 
-Work through the Action List in order. For each item:
-
 1. Read the affected files.
 2. Make the minimal, focused change needed.
 3. Check the item off in the plan file: `- [ ]` → `- [x]`.
@@ -38,8 +36,6 @@ Follow project conventions strictly:
 - Keep changes minimal — only implement what the plan specifies.
 
 ### Step 4 — Verify against Acceptance Criteria
-
-After all action items are complete, review each AC item:
 
 - If verifiable by running tests, run them and confirm they pass.
 - If verifiable by inspection, confirm the criterion is satisfied.
