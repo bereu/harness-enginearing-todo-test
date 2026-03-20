@@ -5,7 +5,7 @@ export class SystemError extends Error {
     readonly code?: string,
   ) {
     super(message);
-    this.name = 'SystemError';
+    this.name = "SystemError";
     Object.setPrototypeOf(this, SystemError.prototype);
   }
 }

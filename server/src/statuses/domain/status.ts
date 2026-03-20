@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { randomUUID } from "crypto";
 
 export class Status {
   private constructor(
@@ -34,19 +34,19 @@ export class Status {
 
   private static validateLabel(label: string): void {
     if (!label || label.length === 0) {
-      throw new Error('Status label must not be empty');
+      throw new Error("Status label must not be empty");
     }
     if (label.length > 50) {
-      throw new Error('Status label must be no longer than 50 characters');
+      throw new Error("Status label must be no longer than 50 characters");
     }
   }
 
   private static validateSlug(slug: string): void {
     if (!slug || slug.length === 0) {
-      throw new Error('Status slug must not be empty');
+      throw new Error("Status slug must not be empty");
     }
     if (slug.length > 50) {
-      throw new Error('Status slug must be no longer than 50 characters');
+      throw new Error("Status slug must be no longer than 50 characters");
     }
   }
 
@@ -54,9 +54,9 @@ export class Status {
     return label
       .toLowerCase()
       .trim()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '');
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
   }
 }

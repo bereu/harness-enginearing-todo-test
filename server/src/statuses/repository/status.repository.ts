@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Status } from '@/statuses/domain/status';
-import { StatusesList } from '@/statuses/domain/statuses-list';
-import { StatusDataSource } from '@/statuses/datasource/status.datasource';
+import { Injectable } from "@nestjs/common";
+import { Status } from "@/statuses/domain/status";
+import { StatusesList } from "@/statuses/domain/statuses-list";
+import { StatusDataSource } from "@/statuses/datasource/status.datasource";
 
 @Injectable()
 export class StatusRepository {
@@ -9,9 +9,7 @@ export class StatusRepository {
 
   findAll(): StatusesList {
     const models = this.datasource.findAll();
-    const statuses = models.map((m) =>
-      Status.reconstruct(m.id, m.label, m.slug),
-    );
+    const statuses = models.map((m) => Status.reconstruct(m.id, m.label, m.slug));
     return StatusesList.create(statuses);
   }
 

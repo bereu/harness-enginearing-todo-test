@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { Status } from '@/statuses/domain/status';
-import { StatusRepository } from '@/statuses/repository/status.repository';
-import { StatusResponseDto } from '@/statuses/dto/status.response.dto';
-import { BusinessLogicError } from '@/shared/domain/errors/business-logic.error';
+import { Injectable } from "@nestjs/common";
+import { Status } from "@/statuses/domain/status";
+import { StatusRepository } from "@/statuses/repository/status.repository";
+import { StatusResponseDto } from "@/statuses/dto/status.response.dto";
+import { BusinessLogicError } from "@/shared/domain/errors/business-logic.error";
 
 @Injectable()
 export class CreateStatusCommand {
@@ -13,9 +13,7 @@ export class CreateStatusCommand {
 
     const existing = this.repository.findBySlug(status.slug());
     if (existing) {
-      throw new BusinessLogicError(
-        `Status with slug "${status.slug()}" already exists`,
-      );
+      throw new BusinessLogicError(`Status with slug "${status.slug()}" already exists`);
     }
 
     this.repository.save(status);

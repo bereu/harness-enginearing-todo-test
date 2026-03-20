@@ -1,10 +1,10 @@
-import { TodoId } from '@/todos/domain/todo-id';
-import { TodoTitle } from '@/todos/domain/todo-title';
+import { TodoId } from "@/todos/domain/todo-id";
+import { TodoTitle } from "@/todos/domain/todo-title";
 
-export const VALID_STATUSES = ['todo', 'in-progress', 'done'] as const;
+export const VALID_STATUSES = ["todo", "in-progress", "done"] as const;
 export type TodoStatus = string;
 
-const DEFAULT_STATUS: TodoStatus = 'todo';
+const DEFAULT_STATUS: TodoStatus = "todo";
 
 export class Todo {
   private constructor(
@@ -26,14 +26,7 @@ export class Todo {
     const todoTitle = TodoTitle.create(title);
     const validatedStatus = this.validateStatus(status || DEFAULT_STATUS);
 
-    return new Todo(
-      todoId,
-      todoTitle,
-      description || null,
-      false,
-      new Date(),
-      validatedStatus,
-    );
+    return new Todo(todoId, todoTitle, description || null, false, new Date(), validatedStatus);
   }
 
   static reconstruct(
@@ -48,14 +41,7 @@ export class Todo {
     const todoTitle = TodoTitle.create(title);
     const validatedStatus = this.validateStatus(status || DEFAULT_STATUS);
 
-    return new Todo(
-      todoId,
-      todoTitle,
-      description,
-      completed,
-      createdAt,
-      validatedStatus,
-    );
+    return new Todo(todoId, todoTitle, description, completed, createdAt, validatedStatus);
   }
 
   id(): TodoId {
@@ -109,26 +95,12 @@ export class Todo {
 
   // Derivation: Create new immutable instance as completed
   asCompleted(): Todo {
-    return new Todo(
-      this._id,
-      this._title,
-      this._description,
-      true,
-      this._createdAt,
-      this._status,
-    );
+    return new Todo(this._id, this._title, this._description, true, this._createdAt, this._status);
   }
 
   // Derivation: Create new immutable instance as pending
   asPending(): Todo {
-    return new Todo(
-      this._id,
-      this._title,
-      this._description,
-      false,
-      this._createdAt,
-      this._status,
-    );
+    return new Todo(this._id, this._title, this._description, false, this._createdAt, this._status);
   }
 
   // Derivation: Create new immutable instance with updated status
@@ -146,10 +118,10 @@ export class Todo {
 
   private static validateStatus(status: string): TodoStatus {
     if (!status || status.trim().length === 0) {
-      throw new Error('Status must not be empty');
+      throw new Error("Status must not be empty");
     }
     if (status.length > 50) {
-      throw new Error('Status must be no longer than 50 characters');
+      throw new Error("Status must be no longer than 50 characters");
     }
     return status;
   }

@@ -11,7 +11,7 @@
     "test": "pnpm run --parallel -r test",
     "test:client": "vp run -F client test",
     "test:server": "vp run -F server test",
-    "lint": "vp check && vp lint && pnpm run lint:duplicates",
+    "lint": "vp check --fix && vp lint && pnpm run lint:duplicates",
     "lint:duplicates": "jscpd ./client/src ./server/src",
     "install:all": "vp install",
     "adr:create": "archgate adr create",

@@ -1,52 +1,64 @@
 ---
 name: code-review
-description: Use this skill to audit code changes for compliance with project standards, strict typing, architecture rules, and security best practices.
-version: 1.0.0
+description: Use this skill to improve code and fix error. After implementing features we must use this.
 ---
 
 ## Overview
 
-This skill provides a systematic way to review code changes. It ensures that all contributions adhere to the strict rules defined in `AGENTS.md`, follow the NestJS + CQRS architectural patterns, and maintain high security and performance standards.
+1. **Useless duplicate file:** Check if there are any redundantly created files that duplicate existing ones.
+   _Example:_ Creating a new `user-profile.service.ts` when a `users.service.ts` already exists and handles profile operations.
 
-## Linear Integration
+2. **Useless duplicate code:** Identify and abstract any repeated code logic into reusable functions or components.
+   _Example:_
 
-Before starting a review, ensure the Linear ticket status is updated:
+   ```typescript
+   // Bad: Duplicating logic across different files
+   const isAdult = new Date().getFullYear() - user.birthYear >= 18;
 
-1.  **Update Status**: `linear-cli issues update ISSUE_ID --state "In Review"`
-2.  **Post Review**: Once the review is complete, add the summary as a comment to the ticket using `linear-cli issues comment ISSUE_ID --body "REVIEW_SUMMARY"`.
+   // Good: Abstracting into a reusable function or entity method
+   const isAdult = user.isAdult();
+   ```
 
-## Review Checklist
+3. **Useless comment:** Remove commented-out code, obvious comments that don't add value, and outdated explanations.
+   _Example:_
 
-### 1. Type Safety (Strict)
+   ```typescript
+   // Bad: Obvious comments and left-over dead code
+   // Increment the retry count by 1
+   retryCount++;
+   // console.log("retrying...");
 
-- **No `any`**: Ensure `any` is not used. Use `unknown` + type guards or precise interfaces. (Enforced by `noExplicitAny`)
-- **No `!` (Non-null assertions)**: Check for explicit null/undefined handling. (Enforced by `noNonNullAssertion`)
-- **Discriminated Unions**: Verify use of discriminated unions for state and error handling.
-- **Strict Imports**: Ensure `@/` path aliases are used for all project-internal imports. No `../` parent relative imports. (Enforced by `noParentIndexImport` and project conventions)
+   // Good: Self-documenting code without clutter
+   retryCount++;
+   ```
 
-### 2. NestJS & Architecture
+4. **Security issues:** Scan the changes for potential vulnerabilities, such as hardcoded secrets, lack of validation, or improper authorization checks.
+   _Example:_
 
-- **Dependency Injection**: Ensure services are injected via constructors and not manually instantiated or accessed via globals.
-- **Modularization**: Check that logic is placed in the correct Module, Controller, or Service.
-- **CQRS Compliance**:
-  - **Record Layer**: Only handles write/state-modifying operations.
-  - **Read Layer**: Only handles query/data-retrieval operations.
-- **Named Exports**: Ensure no default exports are used.
+   ```typescript
+   // Bad: Hardcoding secrets and lack of validation
+   const token = "my-super-secret-dev-token";
+   const query = `SELECT * FROM users WHERE id = ${req.body.id}`;
 
-### 4. Testing
+   // Good: Using config services and proper ORMs/query builders
+   const token = this.configService.get("API_TOKEN");
+   const user = await this.userRepository.findOne({ where: { id: dto.id } });
+   ```
 
-- **Meaningful Assertions**: Avoid shallow tests; ensure tests verify actual behavior and side effects. especially bussiness logic(ex: CQRS part)
+5. **Magic numbers and raw strings:** Avoid using magic numbers or raw strings for representing statuses or configuration values. Refer to `GEN-001`.
+   _Example:_
 
-### 5. error handling
+   ```typescript
+   // Bad: Using raw strings for status check
+   if (status === "done") {
+     // ...
+   }
 
-- **Error Handling**: Ensure error handling is implemented correctly. especially when using external API or subprocess.
-- **Error tracing**: Are we using Rollbar to trace errors?
+   // Good: Using a central constant array and derived type
+   export const TODO_STATUSES = ["todo", "in-progress", "done"] as const;
+   export type TodoStatus = (typeof TODO_STATUSES)[number];
 
-## Review Output Format
-
-Reviews should produce a categorized report:
-
-- 🔴 **Must Fix**: Critical violations (e.g., use of `any`, shell interpolation, broken DI).
-- 🟡 **Improvement**: Suggested optimizations or readability enhancements.
-- 🔵 **Nitpick**: Minor stylistic comments.
-- ✅ **LGTM**: Section is approved.
+   function updateStatus(status: TodoStatus) {
+     // ...
+   }
+   ```

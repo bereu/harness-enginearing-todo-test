@@ -1,8 +1,8 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { AllExceptionsFilter } from '@/shared/infrastructure/filters/all-exceptions.filter';
-import { RollbarService } from '@/shared/infrastructure/rollbar/rollbar.service';
-import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { AllExceptionsFilter } from "@/shared/infrastructure/filters/all-exceptions.filter";
+import { RollbarService } from "@/shared/infrastructure/rollbar/rollbar.service";
+import { ValidationPipe } from "@nestjs/common";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

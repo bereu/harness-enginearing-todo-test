@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { TodosList } from '@/todos/domain/todos-list';
-import { TodoRepository } from '@/todos/repository/todo.repository';
+import { Injectable } from "@nestjs/common";
+import { TodosList } from "@/todos/domain/todos-list";
+import { TodoRepository } from "@/todos/repository/todo.repository";
 
 @Injectable()
 export class GetTodosQuery {

@@ -1,10 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Todo, TodoStatus } from '@/todos/domain/todo';
-import { TodoId } from '@/todos/domain/todo-id';
-import {
-  TodoDataSource,
-  TodoDataSourceModel,
-} from '@/todos/datasource/todo.datasource';
+import { Injectable } from "@nestjs/common";
+import { Todo, TodoStatus } from "@/todos/domain/todo";
+import { TodoId } from "@/todos/domain/todo-id";
+import { TodoDataSource, TodoDataSourceModel } from "@/todos/datasource/todo.datasource";
 
 @Injectable()
 export class TodoRepository {
@@ -49,10 +46,6 @@ export class TodoRepository {
       model.createdAt,
       model.status as TodoStatus,
     );
-  }
-
-  findById(id: TodoId): Todo | null {
-    return this.getById(id);
   }
 
   update(todo: Todo): void {

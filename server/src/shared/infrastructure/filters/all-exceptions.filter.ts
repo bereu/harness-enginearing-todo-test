@@ -5,17 +5,15 @@ import {
   HttpException,
   HttpStatus,
   Inject,
-} from '@nestjs/common';
-import { Response } from 'express';
-import { RollbarService } from '@/shared/infrastructure/rollbar/rollbar.service';
-import { BusinessLogicError } from '@/shared/domain/errors/business-logic.error';
-import { SystemError } from '@/shared/domain/errors/system.error';
+} from "@nestjs/common";
+import { Response } from "express";
+import { RollbarService } from "@/shared/infrastructure/rollbar/rollbar.service";
+import { BusinessLogicError } from "@/shared/domain/errors/business-logic.error";
+import { SystemError } from "@/shared/domain/errors/system.error";
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  constructor(
-    @Inject(RollbarService) private readonly rollbarService: RollbarService,
-  ) {}
+  constructor(@Inject(RollbarService) private readonly rollbarService: RollbarService) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
@@ -23,7 +21,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const request = ctx.getRequest();
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
-    let message = 'Internal server error';
+    let message = "Internal server error";
 
     if (exception instanceof BusinessLogicError) {
       status = exception.statusCode;
@@ -47,9 +45,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       status = exception.getStatus();
       const errorResponse = exception.getResponse();
       message =
-        typeof errorResponse === 'object'
-          ? (errorResponse as unknown as { message?: string }).message ||
-            exception.message
+        typeof errorResponse === "object"
+          ? (errorResponse as unknown as { message?: string }).message || exception.message
           : exception.message;
 
       // Only log 5xx errors from HttpException
@@ -64,13 +61,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
       this.rollbarService.logSystemError(exception, {
         action: `${request.method} ${request.path}`,
         userId: request.user?.id,
-        errorType: 'unknown_error',
+        errorType: "unknown_error",
       });
     } else {
       this.rollbarService.logSystemError(String(exception), {
         action: `${request.method} ${request.path}`,
         userId: request.user?.id,
-        errorType: 'unknown_error',
+        errorType: "unknown_error",
       });
     }
 

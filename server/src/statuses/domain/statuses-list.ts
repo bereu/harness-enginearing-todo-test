@@ -1,9 +1,9 @@
-import { Status } from '@/statuses/domain/status';
+import { Status } from "@/statuses/domain/status";
 
 export class StatusesList {
   private constructor(private readonly list: Status[]) {
     if (!Array.isArray(list)) {
-      throw new Error('StatusesList must be initialized with an array');
+      throw new Error("StatusesList must be initialized with an array");
     }
   }
 
