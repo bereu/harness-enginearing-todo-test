@@ -40,3 +40,13 @@ Follow project conventions strictly:
 - If verifiable by running tests, run them and confirm they pass.
 - If verifiable by inspection, confirm the criterion is satisfied.
 - Check off each AC item as it is met: `- [ ]` → `- [x]`.
+
+### Step 5 — Ask Code Review Agent to review the changes
+
+- Ask review agent to your code
+- check report and fix it if needed. and ask again
+
+### Step 6 — After code review, ask QA Agent to test the feature
+
+- Ask QA agent to test the feature
+- check report and fix it if needed. and ask again

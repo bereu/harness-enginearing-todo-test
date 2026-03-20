@@ -1,4 +1,4 @@
-```markdown
+````markdown
 # Agent Execution Plan: Integrate Stripe Payment Gateway
 
 ## 1. Plan Overview
@@ -12,14 +12,21 @@ The current manual invoicing process is slow and error-prone. Automating payment
 ## 3. MagicNumber / Status design
 
 **Status**
+
+```typescript
 const StatusEnum = {
-ACTIVE: "active",
-INACTIVE: "inactive",
+  ACTIVE: "active",
+  INACTIVE: "inactive",
 } as const;
+```
+
 **HttpCode**
+
+```typescript
 const HttpCodeEnum = {
-NOT_FOUND: 404,
-}
+  NOT_FOUND: 404,
+};
+```
 
 ## 4. Action List
 
@@ -36,4 +43,8 @@ NOT_FOUND: 404,
 - [ ] Failed or canceled payments redirect the user back to the application with an appropriate error message.
 - [ ] The system correctly handles Stripe's test-clock for simulated subscription lifecycle testing.
 - [ ] Webhook signatures are verified to prevent unauthorized status updates.
+
 ```
+
+```
+````
