@@ -1,4 +1,12 @@
-import { IsString, IsOptional, MaxLength, IsBoolean, IsNotEmpty } from "class-validator";
+import {
+  IsString,
+  IsOptional,
+  MaxLength,
+  IsBoolean,
+  IsNotEmpty,
+  IsArray,
+  IsUUID,
+} from "class-validator";
 
 export class UpdateTodoDto {
   @IsOptional()
@@ -19,4 +27,9 @@ export class UpdateTodoDto {
   @IsNotEmpty()
   @MaxLength(50)
   status?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsUUID("4", { each: true })
+  labelIds?: string[];
 }

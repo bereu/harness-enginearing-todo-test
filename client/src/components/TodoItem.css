@@ -37,6 +37,13 @@
   font-size: 12px;
 }
 
+.todo-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
 .todo-status {
   margin-left: 16px;
 }

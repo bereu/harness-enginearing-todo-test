@@ -1,6 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { UpdateTodoCommand } from "@/todos/command/update-todo.command";
 import { TodoRepository } from "@/todos/repository/todo.repository";
+import { SetLabelsForTodoCommand } from "@/todos/command/set-labels-for-todo.command";
 import { Todo } from "@/todos/domain/todo";
 
 describe("UpdateTodoCommand", () => {
@@ -16,6 +17,12 @@ describe("UpdateTodoCommand", () => {
           useValue: {
             getById: jest.fn(),
             update: jest.fn(),
+          },
+        },
+        {
+          provide: SetLabelsForTodoCommand,
+          useValue: {
+            execute: jest.fn(),
           },
         },
       ],

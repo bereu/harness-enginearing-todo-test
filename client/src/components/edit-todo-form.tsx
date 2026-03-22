@@ -3,14 +3,17 @@ import { z } from "zod";
 import type { Todo } from "@/types/todo";
 import { UpdateTodoSchema } from "@/schemas/todo.schema";
 import { useStatuses } from "@/hooks/use-statuses";
+import { useLabels } from "@/hooks/use-labels";
 import { AddStatusInline } from "@/components/add-status-inline";
+import { LabelBadge } from "@/components/label-badge";
+import { LabelPicker } from "@/components/label-picker";
 import "./EditTodoForm.css";
 
 interface EditTodoFormProps {
   todo: Todo;
   onSubmit: (
     id: string,
-    payload: { title?: string; description?: string | null; status?: string },
+    payload: { title?: string; description?: string | null; status?: string; labelIds?: string[] },
   ) => Promise<void>;
   onCancel: () => void;
   isLoading?: boolean;
@@ -33,10 +36,13 @@ export function EditTodoForm({
   const [title, setTitle] = useState(todo.title);
   const [description, setDescription] = useState(todo.description || "");
   const [status, setStatus] = useState(todo.status);
+  const [assignedLabelIds, setAssignedLabelIds] = useState<string[]>(todo.labels.map((l) => l.id));
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [validationErrors, setValidationErrors] = useState<FormErrors>({});
   const [isAddingStatus, setIsAddingStatus] = useState(false);
 
   const { statuses, createStatus } = useStatuses();
+  const { labels, createLabel } = useLabels();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,6 +59,7 @@ export function EditTodoForm({
         title: validated.title,
         description: validated.description,
         status: validated.status,
+        labelIds: assignedLabelIds,
       });
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -161,6 +168,45 @@ export function EditTodoForm({
           <AddStatusInline
             onConfirm={handleNewStatusConfirm}
             onCancel={() => setIsAddingStatus(false)}
+          />
+        )}
+      </div>
+
+      <div className="form-group">
+        <label>Labels</label>
+        <div className="assigned-labels">
+          {assignedLabelIds.map((id) => {
+            const label = labels.find((l) => l.id === id);
+            return label ? (
+              <LabelBadge
+                key={id}
+                label={label}
+                onRemove={() => setAssignedLabelIds((prev) => prev.filter((x) => x !== id))}
+              />
+            ) : null;
+          })}
+        </div>
+        <button
+          type="button"
+          className="add-status-button"
+          onClick={() => setIsPickerOpen((open) => !open)}
+          disabled={isLoading}
+        >
+          + Add label
+        </button>
+        {isPickerOpen && (
+          <LabelPicker
+            allLabels={labels}
+            assignedLabelIds={assignedLabelIds}
+            onToggle={(id) =>
+              setAssignedLabelIds((prev) =>
+                prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+              )
+            }
+            onCreateLabel={async (name, color) => {
+              const created = await createLabel(name, color);
+              setAssignedLabelIds((prev) => [...prev, created.id]);
+            }}
           />
         )}
       </div>

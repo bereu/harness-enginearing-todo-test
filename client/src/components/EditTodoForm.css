@@ -137,6 +137,13 @@
   margin-top: 4px;
 }
 
+.assigned-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
 .add-status-button {
   display: inline-block;
   margin-top: 8px;

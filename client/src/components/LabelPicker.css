@@ -1,0 +1,146 @@
+.label-picker {
+  margin-top: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.label-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.label-picker-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+}
+
+.label-picker-item input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.label-picker-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.label-picker-empty {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+}
+
+.add-label-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: none;
+  border: 1px dashed #646cff;
+  border-radius: 4px;
+  color: #646cff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-label-button:hover {
+  background-color: rgba(100, 108, 255, 0.06);
+}
+
+.new-label-form {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.new-label-name-input {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.new-label-name-input:focus {
+  outline: none;
+  border-color: #646cff;
+}
+
+.color-swatches {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+}
+
+.color-swatch.selected {
+  border-color: #333;
+}
+
+.new-label-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.confirm-label-button,
+.cancel-label-button {
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.confirm-label-button {
+  background-color: #646cff;
+  color: white;
+}
+
+.confirm-label-button:hover:not(:disabled) {
+  background-color: #535bf2;
+}
+
+.confirm-label-button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.cancel-label-button {
+  background-color: #e5e7eb;
+  color: #333;
+}
+
+.cancel-label-button:hover {
+  background-color: #d1d5db;
+}
+
+.label-create-error {
+  color: #dc3545;
+  font-size: 12px;
+}

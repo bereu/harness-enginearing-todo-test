@@ -1,5 +1,6 @@
 import type { Todo } from "@/types/todo";
 import { getStatusLabel, getStatusColor } from "@/constants/todo-statuses";
+import { LabelBadge } from "@/components/label-badge";
 import "./TodoItem.css";
 
 interface TodoItemProps {
@@ -41,6 +42,13 @@ export function TodoItem({ todo, onEdit }: TodoItemProps) {
         <h3 className="todo-title">{todo.title}</h3>
         {todo.description && <p className="todo-description">{todo.description}</p>}
         <small className="todo-date">Created: {createdDate}</small>
+        {todo.labels.length > 0 && (
+          <div className="todo-labels">
+            {todo.labels.map((label) => (
+              <LabelBadge key={label.id} label={label} />
+            ))}
+          </div>
+        )}
       </div>
       <div className="todo-status">
         <span className={`status-badge ${statusColor}`}>{statusLabel}</span>

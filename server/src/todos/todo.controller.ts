@@ -8,15 +8,22 @@ import {
   Query,
   BadRequestException,
   NotFoundException,
+  HttpCode,
+  HttpStatus,
 } from "@nestjs/common";
 import { CreateTodoDto } from "@/todos/dto/create-todo.dto";
 import { UpdateTodoDto } from "@/todos/dto/update-todo.dto";
 import { TodoResponseDto } from "@/todos/dto/todo.response.dto";
+import { CreateLabelDto } from "@/todos/dto/create-label.dto";
+import { LabelResponseDto } from "@/todos/dto/label.response.dto";
 import { GetTodosQuery } from "@/todos/query/get-todos.query";
 import { GetTodoByIdQuery } from "@/todos/query/get-todo-by-id.query";
 import { GetTodosByStatusQuery } from "@/todos/query/get-todos-by-status.query";
+import { GetLabelsQuery } from "@/todos/query/get-labels.query";
+import { GetLabelsForTodoQuery } from "@/todos/query/get-labels-for-todo.query";
 import { CreateTodoCommand } from "@/todos/command/create-todo.command";
 import { UpdateTodoCommand } from "@/todos/command/update-todo.command";
+import { CreateLabelCommand } from "@/todos/command/create-label.command";
 import { Todo, TodoStatus } from "@/todos/domain/todo";
 import { TodoId } from "@/todos/domain/todo-id";
 
@@ -28,6 +35,9 @@ export class TodoController {
     private readonly getTodosByStatusQuery: GetTodosByStatusQuery,
     private readonly createTodoCommand: CreateTodoCommand,
     private readonly updateTodoCommand: UpdateTodoCommand,
+    private readonly getLabelsQuery: GetLabelsQuery,
+    private readonly getLabelsForTodoQuery: GetLabelsForTodoQuery,
+    private readonly createLabelCommand: CreateLabelCommand,
   ) {}
 
   @Post()
@@ -56,6 +66,23 @@ export class TodoController {
     return todosList.getAll().map((todo) => this.mapTodoToResponseDto(todo));
   }
 
+  @Get("/labels")
+  getLabels(): LabelResponseDto[] {
+    return this.getLabelsQuery.execute();
+  }
+
+  @Post("/labels")
+  @HttpCode(HttpStatus.CREATED)
+  createLabel(@Body() dto: CreateLabelDto): LabelResponseDto {
+    try {
+      return this.createLabelCommand.execute(dto);
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : "Failed to create label",
+      );
+    }
+  }
+
   @Get(":id")
   getTodoById(@Param("id") id: string): TodoResponseDto {
     try {
@@ -80,6 +107,7 @@ export class TodoController {
         updateTodoDto.description,
         updateTodoDto.completed,
         updateTodoDto.status as TodoStatus | undefined,
+        updateTodoDto.labelIds,
       );
       if (!todo) {
         throw new NotFoundException(`Todo with id ${id} not found`);
@@ -94,6 +122,7 @@ export class TodoController {
   }
 
   private mapTodoToResponseDto(todo: Todo): TodoResponseDto {
+    const labels = this.getLabelsForTodoQuery.execute(todo.id().value());
     return new TodoResponseDto(
       todo.id().value(),
       todo.title().value(),
@@ -101,6 +130,7 @@ export class TodoController {
       todo.completed(),
       todo.createdAt(),
       todo.status(),
+      labels,
     );
   }
 }

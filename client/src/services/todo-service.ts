@@ -6,6 +6,7 @@ interface UpdateTodoPayload {
   description?: string | null;
   completed?: boolean;
   status?: TodoStatus;
+  labelIds?: string[];
 }
 
 interface TodoResponse extends Omit<Todo, "createdAt"> {
@@ -15,6 +16,7 @@ interface TodoResponse extends Omit<Todo, "createdAt"> {
 const transformTodoResponse = (todo: TodoResponse): Todo => ({
   ...todo,
   createdAt: new Date(todo.createdAt),
+  labels: todo.labels ?? [],
 });
 
 export const todoService = {

@@ -30,6 +30,7 @@ export const UpdateTodoSchema = z.object({
     .nullable(),
   completed: z.boolean().optional(),
   status: z.string().min(1).max(50).optional(),
+  labelIds: z.array(z.string().uuid("Invalid label ID")).optional(),
 });
 
 export type CreateTodoInput = z.infer<typeof CreateTodoSchema>;
