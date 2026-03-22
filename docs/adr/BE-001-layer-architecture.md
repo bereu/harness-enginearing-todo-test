@@ -16,60 +16,61 @@ To maintain high code quality, reduce the introduction of bugs, and ensure the c
 
 We adopt a layered architecture with CQRS (Command Query Responsibility Segregation) principles. The architecture is divided into the following layers and data structures:
 
-### Layer Visualization (Mermaid)
+### Layer rules
 
 ```mermaid
-graph TD
-    subgraph Presentation
-        C1[1. Controller]
-        DTO[DTO - Mapping & API Validation]
+sequenceDiagram
+    autonumber
+    participant Client
+    participant Ctrl as 1. Controller
+    participant Coord as 2. Coordinator
+    participant Logic as 3. Query / 4. Command
+    participant Repo as 5. Repository
+    participant DS as 6. DataSource
+    participant DB as RDB
+
+    Client->>Ctrl: API Request
+    Note over Ctrl: Map to Request DTO<br/>(API Validation)
+
+    Note over Ctrl,Logic: Coordinator orchestrates Command and Query.<br/>If business logic is only a single Command or Query,<br/>Controller can access them directly.
+    alt Orchestrated Flow (Multiple operations)
+        Ctrl->>Coord: Passes DTO or Domain
+        Coord->>Logic: Passes DTO, Domain, or Params
+    else Direct Flow (Single operation)
+        Ctrl->>Logic: Passes DTO, Domain, or Params
     end
-    subgraph Orchestration
-        C2[2. Coordinator]
+
+    Note over Logic: Execute Business Logic<br/>& Domain Validation
+
+    Logic->>Repo: Passes Domain (Write) or Params (Read)
+    Repo->>DS: Passes DataModel or Params
+    DS->>DB: Accesses Database (RDB)
+    DB-->>DS: Returns Raw Data
+    DS-->>Repo: Returns DataModel
+    Note over Repo: Reconstructs Domain Object
+    Repo-->>Logic: Returns Domain
+
+    alt Orchestrated Flow (Multiple operations)
+        Logic-->>Coord: Always returns Domain
+        Coord-->>Ctrl: Returns Domain
+    else Direct Flow (Single operation)
+        Logic-->>Ctrl: Always returns Domain
     end
-    subgraph Logic
-        Q3[3. Query - READ]
-        C4[4. Command - WRITE]
-        DM[Domain - Business Logic & Rules]
-    end
-    subgraph Data
-        R5[5. Repository]
-        D6[6. DataSource]
-    end
 
-    C1 -.-> DTO
-    C1 --> C2
-    C1 --> Q3
-    C1 --> C4
-
-    C2 --> Q3
-    C2 --> C4
-    C2 -.-> DM
-
-    Q3 --> R5
-    Q3 --> D6
-    Q3 -.-> DM
-
-    C4 --> R5
-    C4 --> D6
-    C4 -.-> DM
-
-    R5 --> D6
+    Note over Ctrl: Converts Domain to Response DTO
+    Ctrl-->>Client: API Response (DTO)
 ```
 
 ### Data Structures & Validation
 
 - **DTO (Data Transfer Object)**:
   - Used in the **Controller** layer.
-  - Responsibilities: Mapping API requests to domain objects and performing initial API-level validation (e.g., required fields, basic formats).
 - **Domain**:
-  - Used in **Coordinator**, **Query**, and **Command** layers.
-  - Responsibilities: Encapsulates all business logic and domain rules (e.g., `User` domain with fields like `id`, `name`, `email`).
-  - **Validation**: Must contain strict business validation logic (e.g., "Name must be between 0 and 200 characters").
+  READ `adr/BE-002-manage-data-domain.md`
 
 ### Access Rules
 
-1.  **Controller**: Entry point. Accesses Coordinator, Query, and Command. Uses DTOs for request handling.
+1.  **Controller**: Entry point. Accesses Coordinator, Query, and Command. Uses DTOs for request handling and is responsible for converting returned Domain objects into Response DTOs.
 2.  **Coordinator** (Read/Write): Orchestrates complex flows. Uses Domain objects. The coordinator's sole purpose is the **orchestration** of commands and queries. It must not be used if no orchestration is needed (e.g., merely wrapping a single command or query).
     - **Bad** (Just a wrapper, no orchestration):
       ```typescript
@@ -88,8 +89,8 @@ graph TD
         }
       }
       ```
-3.  **Query** (Read-only): Data retrieval. Accesses Repository/DataSource. Returns Domain objects.
-4.  **Command** (Write-only): Data modification. Accesses Repository/DataSource. Uses Domain objects.
+3.  **Query** (Read-only): Data retrieval.
+4.  **Command** (Write-only): Data modification.
 5.  **Repository**: Aggregates data for domain-unit access. Accesses DataSource.
 6.  **DataSource**: 1:1 mapping to database tables.
 
@@ -108,12 +109,14 @@ We prioritize naming that reflects **business logic** and domain language over t
 - Place strict business validation logic inside **Domain** classes.
 - Use the **Query** layer for all read-only logic.
 - Use the **Command** layer for all write/modification logic.
+- **Always return Domain objects** from both Query and Command layers.
 - Keep each function small with a single responsibility.
 
 ### Don't
 
 - Perform business logic validation in the DTO or Controller.
 - Access the **DataSource** or **Repository** directly from the **Controller**.
+- Access the RDB from any layer other than **Repository** or **DataSource**.
 - Perform write operations within the **Query** layer.
 
 ## Consequences
