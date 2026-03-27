@@ -1,0 +1,8 @@
+## Linear Issue
+https://linear.app/personal-testing-12341fsdgsdfgs/issue/PER-11/add-hello-endpoint-to-harness-for-todo-app
+
+## Description
+Add a GET /hello endpoint that returns {"message": "Hello World"}
+
+## Changes
+Auto-implemented by Claude Code
