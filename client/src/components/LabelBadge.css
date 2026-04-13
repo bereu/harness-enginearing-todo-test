@@ -1,19 +1,19 @@
 .label-badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-  color: white;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-surface);
   white-space: nowrap;
 }
 
 .label-badge-remove {
   background: none;
   border: none;
-  color: white;
+  color: var(--color-surface);
   cursor: pointer;
   font-size: 11px;
   padding: 0;

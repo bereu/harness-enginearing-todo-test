@@ -1,9 +1,15 @@
+:root {
+  --kanban-column-min-width: 300px;
+  --kanban-min-height: 200px;
+  --kanban-drag-over-opacity: 0.15;
+}
+
 .kanban-column {
   flex: 1;
-  min-width: 300px;
-  background: #f5f5f5;
-  border-radius: 8px;
-  padding: 16px;
+  min-width: var(--kanban-column-min-width);
+  background: var(--color-neutral-100);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
   display: flex;
   flex-direction: column;
   height: fit-content;
@@ -13,46 +19,47 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #ddd;
+  margin-bottom: var(--spacing-4);
+  padding-bottom: var(--spacing-2);
+  border-bottom: var(--border-width-2) solid var(--color-neutral-300);
 }
 
 .kanban-column-header h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-neutral-900);
 }
 
 .todo-count {
-  background: #999;
-  color: white;
-  border-radius: 12px;
-  padding: 2px 8px;
-  font-size: 12px;
-  font-weight: 600;
+  background: var(--color-neutral-500);
+  color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
 }
 
 .kanban-column-content {
   display: flex;
   flex-direction: column;
   gap: 0;
-  min-height: 200px;
+  min-height: var(--kanban-min-height);
   flex: 1;
 }
 
 .kanban-column.drag-over {
-  background: #e8f4f8;
+  background: var(--color-brand-primary-light);
+  opacity: var(--kanban-drag-over-opacity);
 }
 
 .empty-column {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 200px;
-  color: #999;
-  font-size: 14px;
+  height: var(--kanban-min-height);
+  color: var(--color-neutral-500);
+  font-size: var(--font-size-sm);
 }
 
 .empty-column p {

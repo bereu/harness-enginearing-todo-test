@@ -1,45 +1,45 @@
 .kanban-board {
   width: 100%;
-  padding: 20px;
-  background: #fff;
+  padding: var(--spacing-5);
+  background: var(--color-surface);
 }
 
 .kanban-board h2 {
   margin-top: 0;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: var(--spacing-5);
+  color: var(--color-neutral-900);
 }
 
 .kanban-container {
   display: flex;
-  gap: 16px;
+  gap: var(--spacing-4);
   overflow-x: auto;
-  padding-bottom: 16px;
+  padding-bottom: var(--spacing-4);
 }
 
 .loading-message,
 .error-message {
-  padding: 20px;
+  padding: var(--spacing-5);
   text-align: center;
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 .error-message {
-  color: #d32f2f;
-  background: #ffebee;
-  border-radius: 4px;
+  color: var(--color-semantic-error);
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: var(--radius-md);
 }
 
 .loading-message {
-  color: #666;
+  color: var(--color-neutral-600);
 }
 
 @media (max-width: 768px) {
   .kanban-board {
-    padding: 12px;
+    padding: var(--spacing-3);
   }
 
   .kanban-container {
-    gap: 12px;
+    gap: var(--spacing-3);
   }
 }

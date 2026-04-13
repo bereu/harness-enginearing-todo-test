@@ -1,40 +1,40 @@
 .error-boundary-fallback {
-  background-color: #fee;
-  border: 1px solid #fcc;
-  border-radius: 8px;
-  padding: 32px;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: var(--border-width-1) solid var(--color-semantic-error);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-8);
   text-align: center;
-  margin: 32px;
+  margin: var(--spacing-8);
 }
 
 .error-boundary-fallback h1 {
-  color: #c33;
+  color: var(--color-semantic-error);
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-4);
 }
 
 .error-boundary-fallback p {
-  color: #666;
-  margin-bottom: 24px;
-  line-height: 1.5;
+  color: var(--color-neutral-600);
+  margin-bottom: var(--spacing-6);
+  line-height: var(--line-height-normal);
 }
 
 .error-boundary-retry {
-  background-color: #646cff;
-  color: white;
+  background-color: var(--color-brand-primary);
+  color: var(--color-surface);
   border: none;
-  padding: 12px 24px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 600;
+  padding: var(--spacing-3) var(--spacing-6);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .error-boundary-retry:hover {
-  background-color: #535bf2;
+  background-color: var(--color-brand-primary-dark);
 }
 
 .error-boundary-retry:active {
-  background-color: #4346d6;
+  background-color: var(--color-btn-primary-active);
 }

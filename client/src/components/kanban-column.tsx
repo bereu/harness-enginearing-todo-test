@@ -10,6 +10,8 @@ interface KanbanColumnProps {
   draggedTodoId: string | null;
   onDragStart: (todoId: string) => void;
   onDragEnd?: () => void;
+  onEdit?: (todo: Todo) => void;
+  onDelete?: (todoId: string) => void;
 }
 
 export function KanbanColumn({
@@ -19,6 +21,8 @@ export function KanbanColumn({
   draggedTodoId,
   onDragStart,
   onDragEnd,
+  onEdit,
+  onDelete,
 }: KanbanColumnProps) {
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -58,7 +62,14 @@ export function KanbanColumn({
           </div>
         ) : (
           columnTodos.map((todo) => (
-            <KanbanCard key={todo.id} todo={todo} onDragStart={onDragStart} onDragEnd={onDragEnd} />
+            <KanbanCard
+              key={todo.id}
+              todo={todo}
+              onDragStart={onDragStart}
+              onDragEnd={onDragEnd}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
           ))
         )}
       </div>

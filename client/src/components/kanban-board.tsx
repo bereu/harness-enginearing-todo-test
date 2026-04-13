@@ -9,9 +9,18 @@ interface KanbanBoardProps {
   isLoading?: boolean;
   error?: string;
   onStatusChange: (todoId: string, newStatus: TodoStatus) => void;
+  onEdit?: (todo: Todo) => void;
+  onDelete?: (todoId: string) => void;
 }
 
-export function KanbanBoard({ todos, isLoading = false, error, onStatusChange }: KanbanBoardProps) {
+export function KanbanBoard({
+  todos,
+  isLoading = false,
+  error,
+  onStatusChange,
+  onEdit,
+  onDelete,
+}: KanbanBoardProps) {
   const [draggedTodoId, setDraggedTodoId] = useState<string | null>(null);
 
   const handleDrop = (todoId: string, newStatus: TodoStatus) => {
@@ -55,6 +64,8 @@ export function KanbanBoard({ todos, isLoading = false, error, onStatusChange }:
             draggedTodoId={draggedTodoId}
             onDragStart={setDraggedTodoId}
             onDragEnd={handleDragEnd}
+            onEdit={onEdit}
+            onDelete={onDelete}
           />
         ))}
       </div>

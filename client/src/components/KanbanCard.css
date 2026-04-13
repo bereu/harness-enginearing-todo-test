@@ -1,16 +1,17 @@
 .kanban-card {
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 8px;
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-neutral-200);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-3);
+  margin-bottom: var(--spacing-2);
   cursor: grab;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .kanban-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-color: #999;
+  border-color: var(--color-neutral-400);
 }
 
 .kanban-card:active {
@@ -22,40 +23,95 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-2);
+  gap: var(--spacing-2);
 }
 
 .kanban-card-title {
   margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-neutral-900);
   flex: 1;
+  text-align: left;
 }
 
 .completed-badge {
   display: inline-block;
   width: 20px;
   height: 20px;
-  background: #4caf50;
-  color: white;
-  border-radius: 50%;
+  background: var(--color-semantic-success);
+  color: var(--color-surface);
+  border-radius: var(--radius-full);
   text-align: center;
   line-height: 20px;
-  font-size: 12px;
-  margin-left: 8px;
+  font-size: var(--font-size-xs);
+  margin-left: var(--spacing-2);
   flex-shrink: 0;
 }
 
 .kanban-card-description {
-  margin: 0 0 8px 0;
-  font-size: 13px;
-  color: #666;
-  line-height: 1.4;
+  margin: 0 0 var(--spacing-3) 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-neutral-600);
+  line-height: var(--line-height-normal);
+  text-align: left;
+}
+
+.kanban-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: var(--spacing-2);
+  border-top: var(--border-width-1) solid var(--color-neutral-100);
 }
 
 .kanban-card-date {
-  display: block;
-  font-size: 12px;
-  color: #999;
+  font-size: var(--font-size-xs);
+  color: var(--color-neutral-500);
+  text-align: left;
+}
+
+/* Action buttons in footer */
+.kanban-card-actions {
+  display: flex;
+  gap: var(--spacing-2);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.kanban-card:hover .kanban-card-actions {
+  opacity: 1;
+}
+
+.kanban-card-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  transition: background-color 0.2s ease;
+  color: var(--color-neutral-500);
+  width: 28px;
+  height: 28px;
+}
+
+.kanban-card-action-btn:hover {
+  background-color: var(--color-neutral-100);
+  color: var(--color-neutral-900);
+}
+
+.kanban-card-action-btn.delete:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--color-semantic-error);
+}
+
+.kanban-card-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

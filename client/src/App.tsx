@@ -1,21 +1,18 @@
 import { useState, useEffect } from "react";
-import { TodoForm } from "@/components/todo-form";
-import { TodoList } from "@/components/todo-list";
 import { KanbanBoard } from "@/components/kanban-board";
 import { EditTodoModal } from "@/components/edit-todo-modal";
+import { AddTodoModal } from "@/components/add-todo-modal/add-todo-modal";
+import { LayoutWrapper } from "@/components/layout/layout-wrapper";
 import { todoService } from "@/services/todo-service";
 import type { Todo, CreateTodoPayload, TodoStatus } from "@/types/todo";
 import "./App.css";
-
-type ViewMode = "list" | "kanban";
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [formError, setFormError] = useState<string | null>(null);
+  const [isAddTodoModalOpen, setIsAddTodoModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [isEditLoading, setIsEditLoading] = useState(false);
   const [editError, setEditError] = useState<string | null>(null);
@@ -39,12 +36,10 @@ function App() {
 
   const handleCreateTodo = async (payload: CreateTodoPayload) => {
     setIsSubmitting(true);
-    setFormError(null);
     try {
       const newTodo = await todoService.createTodo(payload);
       setTodos([...todos, newTodo]);
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Failed to create todo");
       throw err;
     } finally {
       setIsSubmitting(false);
@@ -70,6 +65,19 @@ function App() {
     setEditError(null);
   };
 
+  const handleDeleteTodo = async (todoId: string) => {
+    if (!window.confirm("Are you sure you want to delete this todo?")) {
+      return;
+    }
+
+    try {
+      await todoService.deleteTodo(todoId);
+      setTodos(todos.filter((todo) => todo.id !== todoId));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete todo");
+    }
+  };
+
   const handleSaveTodo = async (
     id: string,
     payload: { title?: string; description?: string | null; status?: TodoStatus },
@@ -89,57 +97,35 @@ function App() {
   };
 
   return (
-    <div className="app-container">
-      <header className="app-header">
-        <h1>📝 Todo App</h1>
-        <p>Stay organized with your todos</p>
-        <div className="view-toggle">
-          <button
-            className={`toggle-btn ${viewMode === "list" ? "active" : ""}`}
-            onClick={() => setViewMode("list")}
-          >
-            List View
-          </button>
-          <button
-            className={`toggle-btn ${viewMode === "kanban" ? "active" : ""}`}
-            onClick={() => setViewMode("kanban")}
-          >
-            Kanban View
-          </button>
-        </div>
-      </header>
-
-      <main className="app-main">
-        <TodoForm
-          onSubmit={handleCreateTodo}
-          isLoading={isSubmitting}
-          error={formError || undefined}
-        />
-        {viewMode === "list" ? (
-          <TodoList
-            todos={todos}
-            isLoading={isLoading}
-            error={error || undefined}
-            onEdit={handleEditTodo}
-          />
-        ) : (
-          <KanbanBoard
-            todos={todos}
-            isLoading={isLoading}
-            error={error || undefined}
-            onStatusChange={handleStatusChange}
-          />
-        )}
-        <EditTodoModal
-          isOpen={editingTodo !== null}
-          todo={editingTodo}
-          onClose={handleCloseEditModal}
-          onSave={handleSaveTodo}
-          isLoading={isEditLoading}
-          error={editError || undefined}
-        />
-      </main>
-    </div>
+    <LayoutWrapper>
+      <div className="add-todo-button-container">
+        <button className="add-todo-button" onClick={() => setIsAddTodoModalOpen(true)}>
+          + Add Todo
+        </button>
+      </div>
+      <KanbanBoard
+        todos={todos}
+        isLoading={isLoading}
+        error={error || undefined}
+        onStatusChange={handleStatusChange}
+        onEdit={handleEditTodo}
+        onDelete={handleDeleteTodo}
+      />
+      <EditTodoModal
+        isOpen={editingTodo !== null}
+        todo={editingTodo}
+        onClose={handleCloseEditModal}
+        onSave={handleSaveTodo}
+        isLoading={isEditLoading}
+        error={editError || undefined}
+      />
+      <AddTodoModal
+        isOpen={isAddTodoModalOpen}
+        onClose={() => setIsAddTodoModalOpen(false)}
+        onSubmit={handleCreateTodo}
+        isLoading={isSubmitting}
+      />
+    </LayoutWrapper>
   );
 }
 

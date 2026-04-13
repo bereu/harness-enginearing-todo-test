@@ -1,46 +1,141 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Brand Colors */
+  --color-brand-primary: #3b82f6;
+  --color-brand-primary-dark: #2563eb;
+  --color-brand-primary-light: #60a5fa;
+  --color-brand-accent: #f59e0b;
 
-  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Neutral Colors */
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  /* Semantic Colors */
+  --color-semantic-success: #10b981;
+  --color-semantic-warning: #f59e0b;
+  --color-semantic-error: #ef4444;
+  --color-semantic-info: #3b82f6;
+
+  /* Semantic Aliases */
+  --color-text: var(--color-neutral-700);
+  --color-text-secondary: var(--color-neutral-600);
+  --color-text-tertiary: var(--color-neutral-500);
+  --color-text-inverse: var(--color-neutral-50);
+  --color-bg: var(--color-neutral-50);
+  --color-bg-secondary: var(--color-neutral-100);
+  --color-border: var(--color-neutral-200);
+  --color-surface: #fff;
+
+  /* Button State Colors */
+  --color-btn-primary-active: #1e40af;
+  --color-status-warning-dark: #b45309;
+  --color-status-success-dark: #065f46;
+  --color-gradient-secondary: #764ba2;
+
+  /* Spacing */
+  --spacing-0: 0;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+
+  /* Typography */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  --font-size-4xl: 36px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* Borders */
+  --border-width-1: 1px;
+  --border-width-2: 2px;
+
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-outline: 0 0 0 3px rgba(59, 130, 246, 0.2);
+
+  /* Legacy aliases for backward compatibility */
+  --sans: var(--font-sans);
+  --heading: var(--font-sans);
+  --mono: var(--font-mono);
+  --text: var(--color-text);
+  --text-h: var(--color-neutral-900);
+  --bg: var(--color-bg);
+  --border: var(--color-border);
+  --code-bg: var(--color-neutral-100);
+  --accent: var(--color-brand-accent);
+  --accent-bg: rgba(245, 158, 11, 0.1);
+  --accent-border: rgba(245, 158, 11, 0.5);
+  --shadow: var(--shadow-lg);
+
+  font: var(--font-size-base) / var(--line-height-normal) var(--font-sans);
   color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
+  color: var(--color-text);
+  background: var(--color-bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   @media (max-width: 1024px) {
-    font-size: 16px;
+    font-size: var(--font-size-sm);
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
+    /* Dark mode color overrides */
+    --color-text: var(--color-neutral-400);
+    --color-text-secondary: var(--color-neutral-500);
+    --color-text-tertiary: var(--color-neutral-600);
+    --color-text-inverse: var(--color-neutral-900);
+    --color-bg: var(--color-neutral-900);
+    --color-bg-secondary: var(--color-neutral-800);
+    --color-border: var(--color-neutral-700);
+    --color-surface: var(--color-neutral-800);
+
+    /* Legacy aliases */
     --accent: #c084fc;
     --accent-bg: rgba(192, 132, 252, 0.15);
     --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow: rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.25);
   }
 
   #social .button-icon {
@@ -53,7 +148,7 @@
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
+  border-inline: var(--border-width-1) solid var(--color-border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -66,27 +161,27 @@ body {
 
 h1,
 h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-neutral-900);
 }
 
 h1 {
-  font-size: 56px;
+  font-size: var(--font-size-4xl);
   letter-spacing: -1.68px;
-  margin: 32px 0;
+  margin: var(--spacing-8) 0;
   @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+    font-size: var(--font-size-3xl);
+    margin: var(--spacing-5) 0;
   }
 }
 h2 {
-  font-size: 24px;
-  line-height: 118%;
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-tight);
   letter-spacing: -0.24px;
-  margin: 0 0 8px;
+  margin: 0 0 var(--spacing-2);
   @media (max-width: 1024px) {
-    font-size: 20px;
+    font-size: var(--font-size-xl);
   }
 }
 p {
@@ -95,15 +190,15 @@ p {
 
 code,
 .counter {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+  border-radius: var(--radius-md);
+  color: var(--color-neutral-900);
 }
 
 code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-neutral-100);
 }

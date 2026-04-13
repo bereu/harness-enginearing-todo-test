@@ -1,4 +1,4 @@
-.edit-todo-modal-backdrop {
+.add-todo-modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -21,7 +21,7 @@
   }
 }
 
-.edit-todo-modal-container {
+.add-todo-modal-container {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   max-width: 500px;
@@ -43,7 +43,7 @@
   }
 }
 
-.edit-todo-modal-header {
+.add-todo-modal-header {
   display: flex;
   justify-content: flex-end;
   padding: var(--spacing-3) var(--spacing-3) 0 0;
@@ -73,7 +73,7 @@
   opacity: 0.5;
 }
 
-.edit-todo-modal-content {
+.add-todo-modal-content {
   padding: 0 var(--spacing-6) var(--spacing-6) var(--spacing-6);
 }
 

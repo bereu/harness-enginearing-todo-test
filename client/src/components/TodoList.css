@@ -1,15 +1,15 @@
 .todo-list-container {
-  background: white;
-  border-radius: 8px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-md);
 }
 
 .todo-list-container h2 {
   margin-top: 0;
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 20px;
+  margin-bottom: var(--spacing-5);
+  color: var(--color-neutral-900);
+  font-size: var(--font-size-xl);
 }
 
 .todo-list {
@@ -19,7 +19,7 @@
 }
 
 .todo-list li {
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-3);
 }
 
 .todo-list li:last-child {
@@ -28,28 +28,28 @@
 
 .empty-state {
   text-align: center;
-  padding: 40px 20px;
-  color: #999;
+  padding: var(--spacing-10) var(--spacing-5);
+  color: var(--color-neutral-500);
 }
 
 .empty-state p {
   margin: 0;
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 .loading-message {
   text-align: center;
-  padding: 40px 20px;
-  color: #999;
-  font-size: 16px;
+  padding: var(--spacing-10) var(--spacing-5);
+  color: var(--color-neutral-500);
+  font-size: var(--font-size-base);
 }
 
 .error-message {
-  background-color: #fee;
-  border: 1px solid #fcc;
-  color: #c33;
-  padding: 12px;
-  border-radius: 4px;
-  font-size: 14px;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: var(--border-width-1) solid var(--color-semantic-error);
+  color: var(--color-semantic-error);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
   text-align: center;
 }

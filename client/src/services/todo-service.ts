@@ -46,4 +46,8 @@ export const todoService = {
     });
     return response.data.map(transformTodoResponse);
   },
+
+  async deleteTodo(id: string): Promise<void> {
+    await httpClient.delete(`/todos/${id}`);
+  },
 };
