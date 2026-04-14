@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(grep *)",
+      "Bash(pnpm *)",
+      "Bash(npm *)",
+      "Bash(curl *)",
+      "Bash(gh *)",
+      "mcp__rollbar__*",
+      "mcp__chrome_devtools__*"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": ["cc-workflow-studio"],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE_PATH=$(cat | jq -r '.tool_input.file_path // empty'); if [[ \"$FILE_PATH\" == /Users/soheieto/sandbox/harness-for-todo-app/* ]]; then cd /Users/soheieto/sandbox/harness-for-todo-app && npm run lint; fi"
+          }
+        ]
+      }
+    ]
+  },
+  "agent": "archgate:developer",
+  "mcpServers": {
+    "vite-plus": {
+      "command": "npx",
+      "args": ["vp", "mcp"]
+    }
+  }
+}
